@@ -32,7 +32,7 @@ const courseSchema = new mongoose.Schema({
 	courseImage: {type: String},
 	description: {type: String},
 
-	categoryId: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+	categoryInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
 	createdAt: {type: Date, default: Date.now }
 })
 
