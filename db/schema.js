@@ -32,8 +32,7 @@ const courseSchema = new mongoose.Schema({
 	courseName: {type: String, required: true},
 	courseImage: {type: String},
 	description: {type: String},
-	badges: [String],
-
+	
 	categoryInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
 	createdAt: {type: Date, default: Date.now }
 })

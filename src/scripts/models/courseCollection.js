@@ -6,6 +6,5 @@ export const CourseModel = Backbone.Model.extend({
 })
 
 export const CourseCollection = Backbone.Collection.extend({
-	model: CourseModel,
-	url: 'api/course'
+	model: CourseModel
 })

@@ -52,7 +52,7 @@ UserAuthModel.logout = function() {
 }
 
 UserAuthModel.getCurrentUser = function() {
-	return localStorage[app_name + '_user'] ? new User(JSON.parse(localStorage[app_name + '_user'])) : null
+	return JSON.parse(localStorage.getItem(app_name + '_user')) ? new User(JSON.parse(localStorage.getItem(app_name + '_user'))) : null
 }
 
 // ..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x
@@ -60,13 +60,15 @@ UserAuthModel.getCurrentUser = function() {
 
 // but, you may extend the UserAuthModel Constructor (which is a Backbone Model)
 const User = UserAuthModel.extend({
-   initialize: function(){
-       this.on('sync change update', this.updateCurrentUser.bind(this))
-   },
+	initialize: function(){
+		this.on('sync change update', this.updateCurrentUser.bind(this))
+	},
 
-   updateCurrentUser: function() {
-       localStorage.setItem('Scribal_user', JSON.stringify(this.attributes))
-   }
+	updateCurrentUser: function() {
+		localStorage.setItem('Scribal_user', JSON.stringify(this.attributes))
+	}
 })
+
+window.User = User
 
 export default User

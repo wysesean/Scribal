@@ -14,7 +14,6 @@ const STORE = Object.assign({}, Backbone.Events, {
 	},
 
 	get(prop){
-		console.log(this.data[prop])
 		if(this.data[prop] === undefined) {
 			throw new Error ('the store does not have a property called: ', + prop)
 		}
@@ -22,8 +21,7 @@ const STORE = Object.assign({}, Backbone.Events, {
 	},
 
 	set(attrs){
-		this.data = Object.assign(this.data,attrs)
-		console.log('heres whats in store data now', this.data)
+		this.data = Object.assign({},this.data,attrs)
 		this.trigger('dataUpdated')
 	},
 

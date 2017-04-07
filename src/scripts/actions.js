@@ -48,85 +48,48 @@ const ACTIONS = {
 //---------------------
 	addCategory(categoryObj){
 		var categoryInstance = new CategoryModel(categoryObj)
-			// categoryInstance
-			// 	.save()
-			// 	.done((resp)=>{
-			// 		console.log('saved your category', resp)
-			// 	})
-			// 	.fail((err)=>{
-			// 		console.log('problem saving your category',err)
-			// 	})
-
-		$.ajax({
-			method: 'POST',
-			type: 'json',
-			url: 'api/category',
-			data: categoryObj
-		})
-		.done(()=>{
-			//NOTE: CALLING FETCHCATEGORIES CAUSES ITSELF TO LOOP
-			ACTIONS.fetchCategories()
-		})
-		.fail((err)=>{
-			console.log('failed adding category', err)
-		})
+			categoryInstance
+				.save()
+				.done((resp)=>{
+					console.log('saved your category', resp)
+					ACTIONS.fetchCategories()
+				})
+				.fail((err)=>{
+					console.log('problem saving your category',err)
+				})
 	},
 	fetchCategories(){
-		//BAD INFINITE LOOP
-
-		// var categoryColl = STORE.get('categoryCollection')
-		// categoryColl
-		// 	.fetch()
-		// 	.then(()=>{
-		// 		STORE.set({
-		// 			categoryCollection: categoryColl
-		// 		})
-		// 	})
-
-		// $.ajax({
-		// 	method: 'GET',
-		// 	type: 'json',
-		// 	url: 'api/category'
-		// })
-		// .done((resp)=>{
-		// 	var newColl = new CategoryCollection()
-		// 	resp.forEach((singleObj)=>{
-		// 		newColl.create(singleObj)
-		// 	})
-		// 	STORE.set({
-		// 		categoryCollection: newColl
-		// 	})
-		// })
-		// .fail((err)=>{
-		// 	console.log('failed fetching categories', err)
-		// })
-
-		$.ajax({
-			method: 'GET',
-			type: 'json',
-			url: 'api/category'
-		})
-		.done((resp)=>{
-			STORE.set({
-				categoryCollection: resp
+		var categoryColl = STORE.get('categoryCollection')
+		categoryColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					categoryCollection: categoryColl
+				})
 			})
-		})
-		.fail((err)=>{
-			console.log('failed fetching categories', err)
-		})
-
 	},
 	updateCategory(categoryId, updateObj){
 
 	},
 	deleteCategory(categoryId){
 		var category = STORE.data.categoryCollection.get(categoryId)
+		category
+			.destroy()
+			.done((resp)=>{
+				console.log('category has been deleted', resp)
+				ACTIONS.fetchCategories()
+			})
+			.fail((err)=>{
+				console.log('problem deleting category', err)
+			})
+
 	},
 //---------------------
 //Course Actions
 //---------------------
 	addCourseToCategory(categoryId, courseObj){
-		
+		console.log('category id', categoryId)
+		console.log('course obj', courseObj)
 	},
 	fetchCoursesByCategory(categoryId){
 		
