@@ -3,10 +3,10 @@ import $ from 'jquery'
 import STORE from './store.js'
 
 import User from './models/userModel.js'
-import CategoryCollection from '.models/categoryCollection.js'
-import CourseCollection from '.models/courseCollection.js'
-import VideoCollection from '.models/videoCollection.js'
-import ClipModel from '.models/clipModel.js'
+import {CategoryModel, CategoryCollection} from './models/categoryCollection.js'
+import {CourseModel, CourseCollection} from './models/courseCollection.js'
+import {VideoModel, VideoCollection} from './models/videoCollection.js'
+import ClipModel from './models/clipModel.js'
 
 
 const ACTIONS = {
@@ -47,19 +47,80 @@ const ACTIONS = {
 //Category Actions
 //---------------------
 	addCategory(categoryObj){
-		
+		var categoryInstance = new CategoryModel(categoryObj)
+			// categoryInstance
+			// 	.save()
+			// 	.done((resp)=>{
+			// 		console.log('saved your category', resp)
+			// 	})
+			// 	.fail((err)=>{
+			// 		console.log('problem saving your category',err)
+			// 	})
+
+		$.ajax({
+			method: 'POST',
+			type: 'json',
+			url: 'api/category',
+			data: categoryObj
+		})
+		.done(()=>{
+			//NOTE: CALLING FETCHCATEGORIES CAUSES ITSELF TO LOOP
+			ACTIONS.fetchCategories()
+		})
+		.fail((err)=>{
+			console.log('failed adding category', err)
+		})
 	},
 	fetchCategories(){
-		
-	},
-	fetchCategoryById(categoryId){
+		//BAD INFINITE LOOP
+
+		// var categoryColl = STORE.get('categoryCollection')
+		// categoryColl
+		// 	.fetch()
+		// 	.then(()=>{
+		// 		STORE.set({
+		// 			categoryCollection: categoryColl
+		// 		})
+		// 	})
+
+		// $.ajax({
+		// 	method: 'GET',
+		// 	type: 'json',
+		// 	url: 'api/category'
+		// })
+		// .done((resp)=>{
+		// 	var newColl = new CategoryCollection()
+		// 	resp.forEach((singleObj)=>{
+		// 		newColl.create(singleObj)
+		// 	})
+		// 	STORE.set({
+		// 		categoryCollection: newColl
+		// 	})
+		// })
+		// .fail((err)=>{
+		// 	console.log('failed fetching categories', err)
+		// })
+
+		$.ajax({
+			method: 'GET',
+			type: 'json',
+			url: 'api/category'
+		})
+		.done((resp)=>{
+			STORE.set({
+				categoryCollection: resp
+			})
+		})
+		.fail((err)=>{
+			console.log('failed fetching categories', err)
+		})
 
 	},
 	updateCategory(categoryId, updateObj){
 
 	},
 	deleteCategory(categoryId){
-
+		var category = STORE.data.categoryCollection.get(categoryId)
 	},
 //---------------------
 //Course Actions
@@ -73,7 +134,7 @@ const ACTIONS = {
 	fetchCourseById(courseId){
 
 	},
-]	deleteCourse(courseId){
+	deleteCourse(courseId){
 		
 	},
 //---------------------

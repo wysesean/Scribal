@@ -6,13 +6,14 @@ const mongoose = require('mongoose');
 const usersSchema = new mongoose.Schema({
 	email: {type: String, required: true},
 	password: {type: String, required: true},
-	userName: {type: String, required: true},
+	name: {type: String, required: true},
 	coursesSelected: [{
 		course: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
 		videosCompleted: {type: mongoose.Schema.Types.ObjectId, ref: 'Video'},
 		progress: {type: Number, default: 0},
 		createdAt: {type: Date, default: Date.now}
 	}],
+	admin: {type: Boolean, default: false},
 	createdAt: {type: Date, default: Date.now}
 })
 
