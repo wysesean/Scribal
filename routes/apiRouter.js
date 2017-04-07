@@ -70,6 +70,13 @@ apiRouter
     })
   })
 
+  .get('/category/:_id', function(req, res){
+    Category.findById(req.params._id, function(err, results){
+      if(err || !results) return res.json(err)
+      res.json(results)
+    })
+  })
+
   .put('/category/:_id', function(req, res){
     Category.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
@@ -85,6 +92,7 @@ apiRouter
     })
   })
 
+  //TO DO OVERHAUL THIS
   .delete('/category/:_id', function(req, res){
     Category.remove({_id:req.params._id}, (err)=>{
       if(err) return res.json(err)
@@ -100,7 +108,7 @@ apiRouter
 //-----------------------------------
 
 apiRouter
-  .post('/course/addToCategory/:_categoryId', function(req, res){
+  .post('/category/course/add/:_categoryId', function(req, res){
     
     Category.findById(req.params._categoryId, function(err, results){
       if(err) return res.json(err)
@@ -115,14 +123,14 @@ apiRouter
     })
   })
 
-  .get('/course', function(req, res){
+  .get('/category/course', function(req, res){
     Course.find(req.query, function(err, results){
       if(err) return res.json(err) 
       res.json(results)
     }).populate('categoryInfo')
   })
 
-  .get('/course/:_id', function(req, res){
+  .get('/category/course/:_id', function(req, res){
     console.log(req.params._id)
     Course.findById(req.params._id, function(err, results){
       if(err || !results) return res.json(err)
@@ -130,7 +138,7 @@ apiRouter
     }).populate('categoryInfo')
   })
 
-  .put('/course/:_id', function(req, res){
+  .put('/category/course/:_id', function(req, res){
     Course.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
         res.status(500).send(err)
@@ -144,8 +152,9 @@ apiRouter
 
     })
   })
-
-  .delete('/course/:_id', function(req, res){
+  
+  //TO DO, OVER HAUL THIS
+  .delete('/category/course/:_id', function(req, res){
     Course.remove({_id:req.params._id}, (err)=>{
       if(err) return res.json(err)
       res.json({
@@ -162,28 +171,35 @@ apiRouter
 //Posting a video also uploads the video to cloudinary. 
 //A refrence is 
 //Posting videos also creates 15second segmented clips of the video
+
+
 apiRouter
-  .post('/video', function(req, res){
+  //TO DO POST VIDEO TO CATEGORY
+  .post('/category/course/video', function(req, res){
     let newVideo = new Video(req.body)
 
     //TO DO, SEGMENT TO CLIPS
-
-
-
     newVideo.save((err, videoRecord)=>{
       if(err) return res.status(500).json(`Problem adding video to database`)
       res.json(videoRecord)
     })
   })
 
-  .get('/video', function(req, res){
+  .get('/category/course/video', function(req, res){
     Video.find(req.query, function(err, results){
       if(err) return res.json(err) 
       res.json(results)
     })
   })
 
-  .put('/video/:_id', function(req, res){
+  .get('/category/course/video/:_id', function(req, res){
+    Video.findById(req.params._id, function(err, results){
+      if(err || !results) return res.json(err)
+      res.json(results)
+    }).populate('courseId')
+  })
+
+  .put('category/course/video/:_id', function(req, res){
     Video.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
         res.status(500).send(err)
@@ -197,8 +213,8 @@ apiRouter
 
     })
   })
-
-  .delete('/video/:_id', function(req, res){
+  //TO DO OVERHAUL THIS
+  .delete('/category/course/video/:_id', function(req, res){
     Video.remove({_id:req.params._id}, (err)=>{
       if(err) return res.json(err)
         res.json({

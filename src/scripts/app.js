@@ -4,6 +4,7 @@ import Backbone from 'backbone'
 import init from './init'
 
 //Views
+import LoginPage from './views/loginPage.js'
 import HomePage from './views/homePage.js'
 import AboutPage from './views/aboutPage.js'
 import CategoriesPage from './views/categoriesPage.js'
@@ -15,6 +16,7 @@ import ErrorPage from './views/errorPage.js'
 const app = function() {
 	var MainRouter = Backbone.Router.extend({
 		routes:{
+			'login': 'showLoginPage',
 			'home': 'showHomePage',
 			'about': 'showAboutPage',
 			'categories': 'showCategoriesPage',
@@ -24,6 +26,9 @@ const app = function() {
 			'': 'handleRedirect',
 			'*errorPage': 'showErrorPage' 
 		},
+		showLoginPage(){
+			ReactDOM.render(<LoginPage />, document.querySelector('.container'))
+		},	
 		showHomePage(){
 			ReactDOM.render(<HomePage />, document.querySelector('.container'))
 		},

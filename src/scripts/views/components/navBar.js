@@ -1,6 +1,9 @@
 import React from 'react'
 
 var NavBar = React.createClass({
+	handleLogin(){
+		location.hash = 'login'
+	},
 	handleHome(){
 		location.hash = 'home'
 	},
@@ -24,6 +27,7 @@ var NavBar = React.createClass({
 			<div className="NavBar">
 				<h1>Scribal</h1>
 				<nav>
+					<button onClick={this.handleLogin} id="LoginButton">Login</button>
 					<button onClick={this.handleHome} id="homeButton">Home</button>
 					<button onClick={this.handleCategories} id="categoriesButton">Categories</button>
 					<button onClick={this.handleCourses} id="coursesButton">Courses</button>

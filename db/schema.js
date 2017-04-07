@@ -9,7 +9,7 @@ const usersSchema = new mongoose.Schema({
 	userName: {type: String, required: true},
 	coursesSelected: [{
 		course: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
-		videosComplted: {type: mongoose.Schema.Types.ObjectId, ref: 'Video'},
+		videosCompleted: {type: mongoose.Schema.Types.ObjectId, ref: 'Video'},
 		progress: {type: Number, default: 0},
 		createdAt: {type: Date, default: Date.now}
 	}],
@@ -31,6 +31,7 @@ const courseSchema = new mongoose.Schema({
 	courseName: {type: String, required: true},
 	courseImage: {type: String},
 	description: {type: String},
+	badges: [String],
 
 	categoryInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
 	createdAt: {type: Date, default: Date.now }
