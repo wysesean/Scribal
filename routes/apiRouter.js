@@ -77,6 +77,14 @@ apiRouter
     })
   })
 
+  .get('/category/:_categoryId/course/', function(req, res){
+    console.log(req.params._categoryId)
+    Course.find({categoryInfo:req.params._categoryId}, function(err, results){
+      if(err || !results) return res.json(err)
+      res.json(results)
+    }).populate('categoryInfo')
+  })
+
   .put('/category/:_id', function(req, res){
     Category.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
@@ -108,14 +116,12 @@ apiRouter
 //-----------------------------------
 
 apiRouter
-  .post('/course/:_categoryId', function(req, res){
+  .post('/course/', function(req, res){
     
-    Category.findById(req.params._categoryId, function(err, results){
+    Category.findById(req.body.categoryId, function(err, results){
       if(err) return res.json(err)
 
       let newCourse = new Course(req.body)
-      newCourse.categoryInfo = results._id
-
       newCourse.save((err, courseRecord)=>{
         if(err) return res.status(500).json(`Problem adding course to database`)
         res.json(courseRecord)
@@ -130,9 +136,9 @@ apiRouter
     }).populate('categoryInfo')
   })
 
-  .get('/course/:_id', function(req, res){
-    console.log(req.params._id)
-    Course.findById(req.params._id, function(err, results){
+  .get('/course/:_courseId/video/', function(req, res){
+    console.log(req.params._categoryId)
+    Video.find({courseInfo:req.params._categoryId}, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
     }).populate('categoryInfo')
@@ -174,7 +180,7 @@ apiRouter
 
 
 apiRouter
-  //TO DO POST VIDEO TO CATEGORY
+  //TO DO POST VIDEO TO COURSE
   .post('/video', function(req, res){
     let newVideo = new Video(req.body)
 

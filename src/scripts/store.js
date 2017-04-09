@@ -12,7 +12,12 @@ const STORE = Object.assign({}, Backbone.Events, {
 		videoCollection: new VideoCollection(), 
 		clipModel: new ClipModel()
 	},
-
+	data_default:{
+		categoryCollection: new CategoryCollection(),
+		courseCollection: new CourseCollection(),
+		videoCollection: new VideoCollection(), 
+		clipModel: new ClipModel()
+	},
 	get(prop){
 		if(this.data[prop] === undefined) {
 			throw new Error ('the store does not have a property called: ', + prop)
@@ -24,7 +29,10 @@ const STORE = Object.assign({}, Backbone.Events, {
 		this.data = Object.assign({},this.data,attrs)
 		this.trigger('dataUpdated')
 	},
-
+	reset: function() {
+		this.data = Object.assign(this.data, this.data_default)
+		this.trigger('dataUpdated')
+	}
 })
 
 export default STORE

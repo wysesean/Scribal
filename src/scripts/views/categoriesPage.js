@@ -4,7 +4,6 @@ import STORE from '../store.js'
 
 
 import AddCategoryForm from './components/adminComponents/addCategoryForm.js'
-import ElementList from './components/elementList.js'
 import NavBar from './components/navBar.js'
 import FooterBar from './components/footerBar.js'
 
@@ -16,6 +15,7 @@ var CategoriesPage = React.createClass({
 		})
 	},
 	componentWillUnmount(){
+		STORE.reset()
 		STORE.off('dataUpdated')
 	},
 	getInitialState(){
@@ -29,6 +29,37 @@ var CategoriesPage = React.createClass({
 				<ElementList list={this.state.categoryCollection} />
 				<AddCategoryForm />
 				<FooterBar />
+			</div>
+		) 
+	}
+})
+
+var ElementList = React.createClass({
+	mapListItem(singleObj){
+		return(
+			<ListItem key={singleObj.cid} listItemInfo={singleObj}/>
+		)
+	},
+	render() {
+		return(
+			<div className="ElementList">
+				{this.props.list.map(this.mapListItem)}
+			</div>
+		) 
+	}
+})
+
+var ListItem = React.createClass({
+	handleButton(categoryId){
+		location.hash = `courses/${categoryId}`
+	},
+	render(){
+		return(
+			<div className="ListItem">
+				<p>Category: {this.props.listItemInfo.attributes.categoryName}</p>
+				<p>Description: {this.props.listItemInfo.attributes.description}</p>
+				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See courses </button>
+				<br />
 			</div>
 		) 
 	}

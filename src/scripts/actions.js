@@ -47,8 +47,8 @@ const ACTIONS = {
 //Category Actions
 //---------------------
 	addCategory(categoryObj){
-		var categoryInstance = new CategoryModel(categoryObj)
-			categoryInstance
+		var newCategory = new CategoryModel(categoryObj)
+			newCategory
 				.save()
 				.done((resp)=>{
 					console.log('saved your category', resp)
@@ -88,14 +88,40 @@ const ACTIONS = {
 //Course Actions
 //---------------------
 	addCourseToCategory(categoryId, courseObj){
-		console.log('category id', categoryId)
-		console.log('course obj', courseObj)
+		var newCourse = new CourseModel(courseObj)
+		newCourse.categoryId = categoryId
+			newCourse
+				.save()
+				.done((resp)=>{
+					console.log('saved your course', resp)
+					ACTIONS.fetchCoursesByCategory(categoryId)
+				})
+				.fail((err)=>{
+					console.log('problem saving your course',err)
+				})
+
 	},
 	fetchCoursesByCategory(categoryId){
-		
+		var courseColl = STORE.get('courseCollection')
+		courseColl.url = `/api/category/${categoryId}/course/`
+		courseColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					courseCollection: courseColl
+				})
+			})
 	},
 	fetchCourseById(courseId){
-
+		var courseColl = STORE.get('courseCollection')
+		courseColl.url = `/api/category${courseId}`
+		courseColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					courseCollection: courseColl
+				})
+			})
 	},
 	deleteCourse(courseId){
 		

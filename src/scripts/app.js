@@ -59,8 +59,5 @@ const app = function() {
 	Backbone.history.start()
 }
 
-// x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..
-// NECESSARY FOR USER FUNCTIONALITY. DO NOT CHANGE. 
 export const app_name = init()
 app()
-// x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..

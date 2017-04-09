@@ -1,4 +1,5 @@
 import Backbone from 'backbone'
+import $ from 'jquery'
 
 export const CourseModel = Backbone.Model.extend({
 	urlRoot: '/api/course',
@@ -6,5 +7,4 @@ export const CourseModel = Backbone.Model.extend({
 })
 
 export const CourseCollection = Backbone.Collection.extend({
-	model: CourseModel
-})
+	model: CourseModel})

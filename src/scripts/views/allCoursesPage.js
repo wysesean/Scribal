@@ -3,7 +3,6 @@ import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 
 import AddCourseForm from './components/adminComponents/addCourseForm.js'
-import ElementList from './components/elementList.js'
 import NavBar from './components/navBar.js'
 import FooterBar from './components/footerBar.js'
 
@@ -15,6 +14,7 @@ var AllCoursesPage = React.createClass({
 		})
 	},
 	componentWillUnmount(){
+		STORE.reset()
 		STORE.off('dataUpdated')
 	},
 	getInitialState(){
@@ -33,6 +33,35 @@ var AllCoursesPage = React.createClass({
 	}
 })
 
+var ElementList = React.createClass({
+	mapListItem(singleObj){
+		return(
+			<ListItem key={singleObj.cid} listItemInfo={singleObj}/>
+		)
+	},
+	render() {
+		return(
+			<div className="ElementList">
+				{this.props.list.map(this.mapListItem)}
+			</div>
+		) 
+	}
+})
 
+var ListItem = React.createClass({
+	handleButton(categoryId){
+		location.hash = `course/${categoryId}`
+	},
+	render(){
+		return(
+			<div className="ListItem">
+				<p>Category: {this.props.listItemInfo.attributes.courseName}</p>
+				<p>Description: {this.props.listItemInfo.attributes.description}</p>
+				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See Videos </button>
+				<br />
+			</div>
+		) 
+	}
+})
 
 export default AllCoursesPage
