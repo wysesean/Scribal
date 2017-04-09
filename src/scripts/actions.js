@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import request from 'superagent'
 
 import STORE from './store.js'
 
@@ -8,6 +9,8 @@ import {CourseModel, CourseCollection} from './models/courseCollection.js'
 import {VideoModel, VideoCollection} from './models/videoCollection.js'
 import ClipModel from './models/clipModel.js'
 
+const CLOUDINARY_UPLOAD_PRESET = 'sjgfpzzo'
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dd21qo4mj/upload'
 
 const ACTIONS = {
 
@@ -129,6 +132,12 @@ const ACTIONS = {
 //---------------------
 //Video Actions
 //---------------------
+	uploadVideo(file){
+		let upload = request.post(CLOUDINARY_UPLOAD_URL)
+							.field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+							.field('file',file)
+		return upload
+	},
 	addVideoToCourse(courseId){
 		
 	},

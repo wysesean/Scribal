@@ -9,6 +9,9 @@ import FooterBar from './components/footerBar.js'
 
 import {Video} from 'cloudinary-react'
 
+// <Video cloud_name='dd21qo4mj' publicId='oceans_ef0epk' controls='controls'></Video>
+
+
 
 var AllCoursesPage = React.createClass({
 	componentWillMount(){
@@ -29,7 +32,6 @@ var AllCoursesPage = React.createClass({
 			<div className="AllCoursesPage">
 				<NavBar />
 				<h2>CoursesPage</h2>
-				<Video cloud_name='dd21qo4mj' publicId='oceans_ef0epk'></Video>
 				<ElementList list={this.state.videoCollection} />
 				<AddVideoForm courseId={this.props.course}/>
 				<FooterBar />
