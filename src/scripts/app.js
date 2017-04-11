@@ -44,8 +44,8 @@ const app = function() {
 		showCoursePage(courseId){
 			ReactDOM.render(<CoursePage course={courseId}/>, document.querySelector('.container'))
 		},
-		showVideoPage(videoId){
-			ReactDOM.render(<VideoPage video={videoId}/>, document.querySelector('.container'))
+		showVideoPage(lectureId){
+			ReactDOM.render(<VideoPage lecture={lectureId}/>, document.querySelector('.container'))
 		},
 		handleRedirect(){
 			location.hash = 'home'

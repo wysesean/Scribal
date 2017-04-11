@@ -37,14 +37,15 @@ const courseSchema = new mongoose.Schema({
 	createdAt: {type: Date, default: Date.now }
 })
 
-const videoSchema = new mongoose.Schema({
-	videoTitle: {type:String, required: true},
-	referenceURL: {type: String, required: true},
+const lectureSchema = new mongoose.Schema({
+	lectureTitle: {type:String, required: true},
+	videoURL: {type: String, required: true},
+	videoPublicId: {type: String, required: true},
+	thumbnailURL: {type:String, required: true},
 	videoLength: {type: Number, required: true},
 	courseIndex: {type: Number, required: true},
 	description: {type: String},
 	views: {type:Number, default: 0},
-
 
 	courseInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
 	createdAt: {type: Date, default: Date.now}
@@ -56,13 +57,13 @@ const clipsSchema = new mongoose.Schema({
 	transcriptionCollection: [{body:String, language:String}],
 	transcriptionTotal: {type: Number, default: 0},
 
-	videoInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Video'}
+	lectureInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}
 })
 
 module.exports = {
 	User: mongoose.model('User', usersSchema),	
 	Category: mongoose.model('Category', categorySchema),
 	Course: mongoose.model('Course', courseSchema),
-	Video: mongoose.model('Video', videoSchema),
+	Lecture: mongoose.model('Lecture', lectureSchema),
 	Clips: mongoose.model('Clips', clipsSchema)
 }

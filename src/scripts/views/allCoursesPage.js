@@ -57,7 +57,7 @@ var ListItem = React.createClass({
 			<div className="ListItem">
 				<p>Category: {this.props.listItemInfo.attributes.courseName}</p>
 				<p>Description: {this.props.listItemInfo.attributes.description}</p>
-				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See Videos </button>
+				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See Course </button>
 				<br />
 			</div>
 		) 

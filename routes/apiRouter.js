@@ -5,7 +5,7 @@ let helpers = require('../config/helpers.js')
 let User = require('../db/schema.js').User
 let Category = require('../db/schema.js').Category
 let Course = require('../db/schema.js').Course
-let Video = require('../db/schema.js').Video
+let Lecture = require('../db/schema.js').Lecture
 let Clips = require('../db/schema.js').Clips
 
   
@@ -78,7 +78,6 @@ apiRouter
   })
 
   .get('/category/:_categoryId/course/', function(req, res){
-    console.log(req.params._categoryId)
     Course.find({categoryInfo:req.params._categoryId}, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
@@ -136,12 +135,11 @@ apiRouter
     }).populate('categoryInfo')
   })
 
-  .get('/course/:_courseId/video/', function(req, res){
-    console.log(req.params._categoryId)
-    Video.find({courseInfo:req.params._categoryId}, function(err, results){
+  .get('/course/:_courseId/lecture/', function(req, res){
+    Lecture.find({courseInfo:req.params._courseId}, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
-    }).populate('categoryInfo')
+    }).populate('courseInfo')
   })
 
   .put('/course/:_id', function(req, res){
@@ -174,44 +172,55 @@ apiRouter
 //VIDEO ROUTES
 //-----------------------------------
 
-//Posting a video also uploads the video to cloudinary. 
+//Posting a lecture also uploads the lecture to cloudinary. 
 //A refrence is 
-//Posting videos also creates 15second segmented clips of the video
-
+//Posting lectures also creates 15second segmented clips of the lecture
 
 apiRouter
-  //TO DO POST VIDEO TO COURSE
-  .post('/video', function(req, res){
-    let newVideo = new Video(req.body)
-
-    //TO DO, SEGMENT TO CLIPS
-    newVideo.save((err, videoRecord)=>{
-      if(err) return res.status(500).json(`Problem adding video to database`)
-      res.json(videoRecord)
+  .post('/lecture', function(req, res){
+    console.log('posting lecture')
+    let segmentLength = 3
+    let newLecture = new Lecture(req.body)
+    
+    for(let i=0; i<newLecture.videoLength; i+=segmentLength){
+      console.log('creating clip')
+      let newClip = new Clips({
+        startingOffset: i,
+        endingOffset: i+segmentLength,
+        lectureInfo: newLecture._id
+      })
+      newClip.save((err, clipRecord)=>{
+        if(err) return res.status(500).json(`Problem creating and adding clips to database`)
+      })
+    }
+    newLecture.save((err, lectureRecord)=>{
+      if(err) return res.status(500).json(`Problem adding lecture to database`)
+      res.json(lectureRecord)
     })
+
   })
 
-  .get('/video', function(req, res){
-    Video.find(req.query, function(err, results){
+  .get('/lecture', function(req, res){
+    Lecture.find(req.query, function(err, results){
       if(err) return res.json(err) 
       res.json(results)
     })
   })
 
-  .get('/video/:_id', function(req, res){
-    Video.findById(req.params._id, function(err, results){
+  .get('/lecture/:_id', function(req, res){
+    Lecture.findById(req.params._id, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
     }).populate('courseId')
   })
-
-  .put('/video/:_id', function(req, res){
-    Video.findByIdAndUpdate(req.params._id, req.body, function(err, record){
+  
+  .put('/lecture/:_id', function(req, res){
+    Lecture.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
         res.status(500).send(err)
       }
       else if (!record) {
-        res.status(400).send('no video record found with that id')
+        res.status(400).send('no lecture record found with that id')
       }
       else {
         res.json(Object.assign({},req.body,record))
@@ -220,8 +229,8 @@ apiRouter
     })
   })
   //TO DO OVERHAUL THIS
-  .delete('/video/:_id', function(req, res){
-    Video.remove({_id:req.params._id}, (err)=>{
+  .delete('/lecture/:_id', function(req, res){
+    Lecture.remove({_id:req.params._id}, (err)=>{
       if(err) return res.json(err)
         res.json({
           msg: `record ${req.params._id} successfully deleted`,
@@ -241,12 +250,16 @@ apiRouter
 
       var random = Math.floor(Math.random() * count)
 
-      Model.findOne().skip(random).exec(
+      Clips.findOne().skip(random).populate('lectureInfo').exec(
         function (err, result) {
         if(err) return res.json(err) 
         res.json(result)
-      }).populate('videoId')
+      })
     })
+  })
+  
+  .put('/clips/:_id/transcribeClip', function(req, res){
+    // Clips.findById
   })
 
 

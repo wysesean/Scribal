@@ -6,7 +6,7 @@ import STORE from './store.js'
 import User from './models/userModel.js'
 import {CategoryModel, CategoryCollection} from './models/categoryCollection.js'
 import {CourseModel, CourseCollection} from './models/courseCollection.js'
-import {VideoModel, VideoCollection} from './models/videoCollection.js'
+import {LectureModel, LectureCollection} from './models/lectureCollection.js'
 import ClipModel from './models/clipModel.js'
 
 const CLOUDINARY_UPLOAD_PRESET = 'sjgfpzzo'
@@ -117,7 +117,7 @@ const ACTIONS = {
 	},
 	fetchCourseById(courseId){
 		var courseColl = STORE.get('courseCollection')
-		courseColl.url = `/api/category${courseId}`
+		courseColl.url = `/api/category/${courseId}`
 		courseColl
 			.fetch()
 			.then(()=>{
@@ -138,16 +138,42 @@ const ACTIONS = {
 							.field('file',file)
 		return upload
 	},
-	addVideoToCourse(courseId){
-		
+	addLectureToCourse(courseId,courseObj){
+		var newLecture = new LectureModel(courseObj)
+			newLecture
+				.save()
+				.done((resp)=>{
+					console.log('saved your lecture', resp)
+					ACTIONS.fetchLectureByCourse(courseId)
+				})
+				.fail((err)=>{
+					console.log('problem saving lecture to database', err)
+				})
 	},
-	fetchVideoByCourse(courseId){
+	fetchLectureByCourse(courseId){
+		var lectureColl = STORE.get('lectureCollection')
+		lectureColl.url = `/api/course/${courseId}/lecture/`
+		lectureColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					lectureCollection: lectureColl
+				})
+			})
 
 	},
-	fetchVideoById(videoId){
-
+	fetchLectureById(lectureId){
+		var lectureColl = new LectureCollection()
+		lectureColl.url = `/api/lecture/${lectureId}`
+		lectureColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					lectureCollection: lectureColl
+				})
+			})
 	},
-	deleteVideo(videoId){
+	deleteLecture(videoId){
 
 	},
 
@@ -155,7 +181,15 @@ const ACTIONS = {
 //Clips Actions
 //---------------------
 	fetchRandomClip(){
-
+		var clipMod = new ClipModel()
+		clipMod.url = `/api/clips/getRandomClip`
+		clipMod
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					clipModel: clipMod
+				})
+			})
 	},
 	transcribeClip(clipId,transcriptionObj){
 

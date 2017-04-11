@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 import {CategoryCollection} from './models/categoryCollection.js'
 import {CourseCollection} from './models/courseCollection.js'
-import {VideoCollection} from './models/videoCollection.js'
+import {LectureCollection} from './models/lectureCollection.js'
 import ClipModel from './models/clipModel.js'
 
 const STORE = Object.assign({}, Backbone.Events, {
@@ -9,13 +9,13 @@ const STORE = Object.assign({}, Backbone.Events, {
 	data: {
 		categoryCollection: new CategoryCollection(),
 		courseCollection: new CourseCollection(),
-		videoCollection: new VideoCollection(), 
+		lectureCollection: new LectureCollection(), 
 		clipModel: new ClipModel()
 	},
 	data_default:{
 		categoryCollection: new CategoryCollection(),
 		courseCollection: new CourseCollection(),
-		videoCollection: new VideoCollection(), 
+		lectureCollection: new LectureCollection(), 
 		clipModel: new ClipModel()
 	},
 	get(prop){
@@ -30,7 +30,7 @@ const STORE = Object.assign({}, Backbone.Events, {
 		this.trigger('dataUpdated')
 	},
 	reset: function() {
-		this.data = Object.assign(this.data, this.data_default)
+		this.data = this.data_default
 		this.trigger('dataUpdated')
 	}
 })
