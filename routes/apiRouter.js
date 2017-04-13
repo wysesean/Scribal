@@ -8,6 +8,7 @@ let Course = require('../db/schema.js').Course
 let Lecture = require('../db/schema.js').Lecture
 let Clips = require('../db/schema.js').Clips
 
+let UTIL = require('./UTIL.js').UTIL
   
 //-----------------------------------
 // USER ROUTES
@@ -179,7 +180,7 @@ apiRouter
 apiRouter
   .post('/lecture', function(req, res){
     console.log('posting lecture')
-    let segmentLength = 3
+    let segmentLength = 10
     let newLecture = new Lecture(req.body)
     
     for(let i=0; i<newLecture.videoLength; i+=segmentLength){
@@ -211,9 +212,13 @@ apiRouter
     Lecture.findById(req.params._id, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
-    }).populate('courseId')
+    }).populate('courseInfo')
   })
   
+  .get('/lecture/:_id/transcription', function(req, res){
+
+  })
+
   .put('/lecture/:_id', function(req, res){
     Lecture.findByIdAndUpdate(req.params._id, req.body, function(err, record){
       if (err) {
@@ -257,9 +262,27 @@ apiRouter
       })
     })
   })
-  
-  .put('/clips/:_id/transcribeClip', function(req, res){
-    // Clips.findById
+
+  .get('/clips/:_id', function(req, res){
+    Clips.findById(req.params._id, function(err, results){
+      if(err || !results) return res.json(err)
+      res.json(results)
+    }).populate('lectureInfo')
+  })
+
+  .put('/clips/:_id/', function(req, res){
+    console.log(req.params._id)
+    Clips.findByIdAndUpdate(req.params._id, req.body, function(err, record){
+          if (err) {
+            res.status(500).send(err)
+          }
+          else if (!record) {
+            res.status(400).send('no category record found with that id')
+          }
+          else {
+            res.json(Object.assign({},req.body,record))
+          }
+    })
   })
 
 

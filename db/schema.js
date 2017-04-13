@@ -54,7 +54,7 @@ const lectureSchema = new mongoose.Schema({
 const clipsSchema = new mongoose.Schema({
 	startingOffset: {type: Number, required: true},
 	endingOffset: {type: Number, required: true},
-	transcriptionCollection: [{body:String, language:String}],
+	transcriptionCollection: [String],
 	transcriptionTotal: {type: Number, default: 0},
 
 	lectureInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}

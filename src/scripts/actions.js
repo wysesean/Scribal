@@ -191,8 +191,12 @@ const ACTIONS = {
 				})
 			})
 	},
-	transcribeClip(clipId,transcriptionObj){
-
+	transcribeClip(clip, inputStr){
+		clip.url = `/api/clips/${clip.get('_id')}`
+		clip.get('transcriptionCollection').push(inputStr)
+		clip.save()
+			.done((resp)=>{console.log('clip has been transcribed', resp)})
+			.fail((err)=>{console.log('problem transcribing clip', err)})
 	}
 }
 
