@@ -65,6 +65,7 @@ var ListItem = React.createClass({
 			<div className="ListItem">
 				<video width="500" height="500" controls>
 				  	<source src={this.props.listItemInfo.attributes.videoURL} type="video/mp4" />
+				  	<track srt="location/file.srt" />
 					Your browser does not support the video.
 				</video>
 				<p>Lecture Name: {this.props.listItemInfo.attributes.lectureTitle}</p>
