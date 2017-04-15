@@ -58,7 +58,7 @@ app.use( passport.session() );
 appAuthentication(User)
 app.use( appMiddleWare.cookifyUser )
 app.use( appMiddleWare.parseQuery )
-// 
+
 // =========
 // ROUTERS
 // =========
@@ -72,3 +72,8 @@ app.use(appMiddleWare.errorHandler);
 app.listen(PORT,function() {
   console.log('\n\n===== listening for requests on port ' + PORT + ' =====\n\n')
 })
+
+// =========
+// CHRON JOB
+// =========
+

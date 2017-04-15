@@ -191,9 +191,10 @@ const ACTIONS = {
 				})
 			})
 	},
-	transcribeClip(clip, inputStr){
+	//set is either a 0 or 1, which corresponds to set1 or set2 respectively
+	transcribeClip(clip, set, inputStr){
+		set ? clip.get('set2').transcriptionCollection.push(inputStr) : clip.get('set1').transcriptionCollection.push(inputStr)
 		clip.url = `/api/clips/${clip.get('_id')}`
-		clip.get('transcriptionCollection').push(inputStr)
 		clip.save()
 			.done((resp)=>{console.log('clip has been transcribed', resp)})
 			.fail((err)=>{console.log('problem transcribing clip', err)})

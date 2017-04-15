@@ -52,11 +52,20 @@ const lectureSchema = new mongoose.Schema({
 })
 
 const clipsSchema = new mongoose.Schema({
-	startingOffset: {type: Number, required: true},
-	endingOffset: {type: Number, required: true},
-	transcriptionCollection: [String],
+	set1: {
+		startingOffset: {type: Number, required: true},
+		endingOffset: {type: Number, required: true},
+		transcriptionCollection: [String]
+	},
+	//Set 2 is 3 seconds ahead of set1's offsets
+	set2:{
+		startingOffset: {type: Number, required: true},
+		endingOffset: {type: Number, required: true},
+		transcriptionCollection: [String]
+	},
+	clipIndex:{type:Number, required: true},
+	transcription: {type:String, default:''},
 	transcriptionTotal: {type: Number, default: 0},
-
 	lectureInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}
 })
 

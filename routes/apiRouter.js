@@ -180,14 +180,22 @@ apiRouter
 apiRouter
   .post('/lecture', function(req, res){
     console.log('posting lecture')
-    let segmentLength = 10
-    let newLecture = new Lecture(req.body)
+    let segmentLength = 7,
+        segmentOffset = 2,
+        newLecture = new Lecture(req.body)
     
     for(let i=0; i<newLecture.videoLength; i+=segmentLength){
       console.log('creating clip')
       let newClip = new Clips({
-        startingOffset: i,
-        endingOffset: i+segmentLength,
+        set1:{
+          startingOffset: i,
+          endingOffset: i+segmentLength,
+        },
+        set2:{
+          startingOffset: i+segmentOffset,
+          endingOffset: i+segmentLength+segmentOffset,
+        },
+        clipIndex: i,
         lectureInfo: newLecture._id
       })
       newClip.save((err, clipRecord)=>{

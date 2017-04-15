@@ -12,8 +12,11 @@ var RandomClip = React.createClass({
 	render() {
 		let clipURL = ''
 		if(this.props.clip.get('lectureInfo')){
-			const { lectureInfo , startingOffset , endingOffset } = this.props.clip.attributes;
-			clipURL = `${CLOUDINARY_URL}/so_${startingOffset},eo_${endingOffset}/${lectureInfo.videoPublicId}.mp4`
+			const { lectureInfo , set1 , set2 } = this.props.clip.attributes;
+			var randomNum = Math.round(Math.random())
+			console.log('random num',randomNum)
+			var randomSet = randomNum ? set2 : set1
+			clipURL = `${CLOUDINARY_URL}/so_${randomSet.startingOffset},eo_${randomSet.endingOffset}/${lectureInfo.videoPublicId}.mp4`
 		}
 		return(
 			<div className="RandomClip">
@@ -21,7 +24,7 @@ var RandomClip = React.createClass({
 				  	<source id="rando" src={clipURL} type="video/mp4" />
 					Your browser does not support the video.
 				</video>
-				<TranscriptionInput clip={this.props.clip}/>
+				<TranscriptionInput clip={this.props.clip} set={randomNum}/>
 			</div>
 		) 
 	}
@@ -30,7 +33,7 @@ var RandomClip = React.createClass({
 var TranscriptionInput = React.createClass({
 	handleInput(e){
 		if(e.key === 'Enter'){
-			ACTIONS.transcribeClip(this.props.clip, e.target.value)
+			ACTIONS.transcribeClip(this.props.clip, this.props.set, e.target.value)
 		}
 
 	},

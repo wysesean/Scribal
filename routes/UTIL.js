@@ -67,6 +67,7 @@ var UTIL = {
 	},
 
 	//Returns the string with the lowest edit distance against all other strings in an array
+	//In other words, returns the most 'average' strings
 	lowestDistance(arr){
 	    let lowest = arr[0]
 	    let prevLowest = this.totalDistance(arr,arr[0])
@@ -80,12 +81,19 @@ var UTIL = {
 	    return lowest
 	},
 
-	//Joins two seperate strings together if they have any commonality
+	//Joins two seperate strings together by their longest common subsequence
 	stringJoiner(str1,str2){
 	    if(str1.length===0) return str2
 	    if(str2.length===0) return str1
-	    var commonString = this.commonSubstring(str1, str2)
-	    return str1+str2.substring(str2.indexOf(commonString)+commonString.length,str2.length)
+        str1.trim()
+        str2.trim()
+	    var commonString = this.commonSubstring(str1, str2).trim()
+
+	    return (
+	    	str1.substring(0,str1.indexOf(commonString))
+            +commonString          
+            +str2.substring(str2.indexOf(commonString)+commonString.length,str2.length)
+        )
 	}
 }
 
