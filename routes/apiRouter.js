@@ -2,14 +2,17 @@ let Router = require('express').Router;
 const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
+//--------------
+//MODELS
+//--------------
 let User = require('../db/schema.js').User
 let Category = require('../db/schema.js').Category
 let Course = require('../db/schema.js').Course
 let Lecture = require('../db/schema.js').Lecture
 let Clips = require('../db/schema.js').Clips
 
-let UTIL = require('./UTIL.js').UTIL
-  
+let UTIL = require('./UTIL.js')
+let vtt = require('./vtt.js')
 //-----------------------------------
 // USER ROUTES
 //-----------------------------------
@@ -184,6 +187,7 @@ apiRouter
         segmentOffset = 2,
         newLecture = new Lecture(req.body)
     
+    //Creates clips for a video
     for(let i=0; i<newLecture.videoLength; i+=segmentLength){
       console.log('creating clip')
       let newClip = new Clips({
@@ -195,7 +199,7 @@ apiRouter
           startingOffset: i+segmentOffset,
           endingOffset: i+segmentLength+segmentOffset,
         },
-        clipIndex: i,
+        clipIndex: i/segmentLength,
         lectureInfo: newLecture._id
       })
       newClip.save((err, clipRecord)=>{
@@ -223,8 +227,75 @@ apiRouter
     }).populate('courseInfo')
   })
   
-  .get('/lecture/:_id/transcription', function(req, res){
 
+  //TO DO
+  .get('/lecture/:_id/transcription', function(req, res){
+    Clips
+        .find({lectureInfo:req.params._id}, function(err, results){
+            if(err || !results) return res.json(err)
+        })
+        .sort({clipIndex:'asc'})
+        .exec(function(err,results){
+            if (err) return res.json(err)
+           
+
+            //Inserts a new line at 30 length segments, doesn't break strings
+            function overFlowString(str){
+                let strArr = str.split(' '),
+                    counter = 0,
+                    segmentLength = 30
+                    
+                for(let i=0; i<strArr.length; i++){
+                    if(counter < segmentLength){
+                        counter += strArr[i].length
+                    }
+                    else{
+                        //adds a new line to the beginning of the word
+                        strArr[i] = strArr[i].replace(/^/,'\r\n')
+                        counter = 0
+                    }
+                }
+                return strArr.join(' ')
+            }
+
+            //Pads numbers with 0s to fit webvtt format if needed
+            function pad(num){
+                num = num < 10 ? '0' + num : num
+                return num
+            }
+
+            //Converts seconds to 00:00:00.000 format
+            function secondsToTime(sec){
+                var seconds = (sec%60).toFixed(3),
+                    minutes = Math.floor(sec / 60) % 60,
+                    hours = Math.floor(sec / 60 / 60)   
+                return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+            }
+
+            //Generates a string that can be used in a vtt file
+            function vtt(){
+                var counter = 0,
+                    content = 'WEBVTT\r\n'
+                this.add = (startingOffset, endingOffset, line)=>{
+                    ++counter
+                    content += `\n\r${counter}\r\n${secondsToTime(startingOffset)} --> ${secondsToTime(endingOffset)} \r\n${overFlowString(line)}`
+                }
+                this.toString = function(){
+                    return content
+                }
+            }
+            
+            var v = new vtt()
+
+            results.forEach((singleElement)=>{
+                let str1Best = UTIL.lowestDistance(singleElement.set1.transcriptionCollection),
+                    str2Best = UTIL.lowestDistance(singleElement.set2.transcriptionCollection),
+                    joined = UTIL.stringJoiner(str1Best, str2Best)
+                v.add(singleElement.set1.startingOffset, singleElement.set1.endingOffset, joined)
+            })
+            console.log()
+            res.json(v.toString())
+        })
   })
 
   .put('/lecture/:_id', function(req, res){
@@ -263,11 +334,16 @@ apiRouter
 
       var random = Math.floor(Math.random() * count)
 
-      Clips.findOne().skip(random).populate('lectureInfo').exec(
-        function (err, result) {
-        if(err) return res.json(err) 
-        res.json(result)
-      })
+      Clips
+        .findOne()
+        .skip(random)
+        .populate('lectureInfo')
+        .exec(
+            function (err, result) {
+                if(err) return res.json(err) 
+                res.json(result)
+            }
+        )
     })
   })
 
@@ -279,7 +355,6 @@ apiRouter
   })
 
   .put('/clips/:_id/', function(req, res){
-    console.log(req.params._id)
     Clips.findByIdAndUpdate(req.params._id, req.body, function(err, record){
           if (err) {
             res.status(500).send(err)

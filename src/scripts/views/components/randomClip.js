@@ -14,7 +14,6 @@ var RandomClip = React.createClass({
 		if(this.props.clip.get('lectureInfo')){
 			const { lectureInfo , set1 , set2 } = this.props.clip.attributes;
 			var randomNum = Math.round(Math.random())
-			console.log('random num',randomNum)
 			var randomSet = randomNum ? set2 : set1
 			clipURL = `${CLOUDINARY_URL}/so_${randomSet.startingOffset},eo_${randomSet.endingOffset}/${lectureInfo.videoPublicId}.mp4`
 		}
