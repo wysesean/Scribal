@@ -286,6 +286,9 @@ apiRouter
             }
             
             var v = new vtt()
+            // var v = new UTIL.vtt()
+            // var {vtt} = UTIL
+
 
             results.forEach((singleElement)=>{
                 let str1Best = UTIL.lowestDistance(singleElement.set1.transcriptionCollection),

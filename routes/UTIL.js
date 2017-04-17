@@ -5,7 +5,7 @@ const UTIL = {
 	  for (var i = 0; i < a.length; ++i) {
 	    //Iterate through the second string
 	    for (var j = 0; j < b.length; ++j) {
-	      //if it's the same letter
+	      //if it's the same word
 	      if (a[i] === b[j]) {
 	        var str = a[i];
 	        var k = 1;

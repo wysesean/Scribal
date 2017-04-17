@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 import $ from 'jquery'
-import {app_name} from '../app'
+import {app_name} from '../app.js'
 
 // ..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x
 const UserAuthModel = Backbone.Model.extend({
@@ -52,7 +52,7 @@ UserAuthModel.logout = function() {
 }
 
 UserAuthModel.getCurrentUser = function() {
-	return JSON.parse(localStorage.getItem(app_name + '_user')) ? new User(JSON.parse(localStorage.getItem(app_name + '_user'))) : null
+	return JSON.parse(localStorage.getItem('Scribal'+ '_user')) ? new User(JSON.parse(localStorage.getItem('Scribal' + '_user'))) : null
 }
 
 // ..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x

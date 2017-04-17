@@ -12,7 +12,6 @@ import FooterBar from './components/footerBar.js'
 
 var VideoPage = React.createClass({
 	componentWillMount(){
-		// $.when(p1,p2).then(function(){})
 		ACTIONS.fetchRandomClip()
 		ACTIONS.fetchLectureById(this.props.lecture)
 		STORE.on('dataUpdated', ()=>{
@@ -32,44 +31,42 @@ var VideoPage = React.createClass({
 				<NavBar />
 				<h2>Video Page</h2>
 				{this.state.clipModel?<RandomClip clip={this.state.clipModel}/>:null}
-				<ElementList list={this.state.lectureCollection} />
+				{this.state.lectureCollection?<LectureVideo video={this.state.lectureCollection.models[0]}/>:null}
 				<FooterBar />
 			</div>
 		) 
 	}
 })
 
-
-
-var ElementList = React.createClass({
-	mapListItem(singleObj){
-		return(
-			<ListItem key={singleObj.cid} listItemInfo={singleObj}/>
-		)
-	},
-	render() {
-		return(
-			<div className="ElementList">
-				{this.props.list.map(this.mapListItem)}
-			</div>
-		) 
-	}
-})
-
-var ListItem = React.createClass({
-	handleButton(videoId){
-		location.hash = `video/${videoId}`
+var LectureVideo = React.createClass({
+	//Video with an initial undefined src needs to be loaded again
+	componentWillReceiveProps() {
+		if(this.videoTag){
+			this.videoTag.load()
+			var startTime, endTime, message;
+		    var newTextTrack = this.videoTag.addTextTrack("captions", "sample");
+		    // newTextTrack.mode = newTextTrack.SHOWING; // set track to display
+		   // create some cues and add them to the new track 
+			for (var i = 0; i < 30; i++) {
+		    	startTime = i * 5;
+		    	endTime = ((i * 5) + 5);
+		    	message = "This is number " + i;
+		    	newTextTrack.addCue(new TextTrackCue(startTime, endTime, message));
+		    }
+		    this.videoTag.play()
+		}
 	},
 	render(){
+		let srcURL = ''
+		if(this.props.video){
+			srcURL = this.props.video.get('videoURL')
+		}
 		return(
-			<div className="ListItem">
-				<video width="500" height="500" controls>
-				  	<source src={this.props.listItemInfo.attributes.videoURL} type="video/mp4" />
+			<div className="LectureVideo">
+				<video ref={(input)=>this.videoTag = input} width="500" height="500" controls>
+				  	<source src={srcURL} type="video/mp4" />
 					Your browser does not support the video.
 				</video>
-				<p>Lecture Name: {this.props.listItemInfo.attributes.lectureTitle}</p>
-				<p>Description: {this.props.listItemInfo.attributes.description}</p>
-				<br />
 			</div>
 		) 
 	}

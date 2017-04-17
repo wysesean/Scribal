@@ -13,13 +13,11 @@ const errorHandler = function(err, req, res, next) {
 
 const cookifyUser = function(req,res,next) {
   if (req.user) {
-    res.cookie(global.PROJECT_NAME + '_user',JSON.stringify(req.user))
-    res.cookie('tiy_full_stack_app_name', global.PROJECT_NAME)
+    res.cookie('Scribal' + '_user',JSON.stringify(req.user))
     next()
   }
   else {
-    res.cookie(global.PROJECT_NAME + '_user','null')
-    res.cookie('tiy_full_stack_app_name', global.PROJECT_NAME)
+    res.cookie('Scribal_user', 'null')
     next()
   }
 }

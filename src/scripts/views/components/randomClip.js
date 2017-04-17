@@ -4,8 +4,9 @@ import ACTIONS from '../../actions.js'
 const CLOUDINARY_URL = 'https://res.cloudinary.com/dd21qo4mj/video/upload'
 
 var RandomClip = React.createClass({
+	//Video with an initial undefined src needs to be loaded again
 	componentWillReceiveProps() {
-		if (this.videoTag) {
+		if(this.videoTag){
 			this.videoTag.load()
 		}
 	},
@@ -34,7 +35,6 @@ var TranscriptionInput = React.createClass({
 		if(e.key === 'Enter'){
 			ACTIONS.transcribeClip(this.props.clip, this.props.set, e.target.value)
 		}
-
 	},
 	render(){
 		return(
