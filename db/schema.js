@@ -69,19 +69,6 @@ const clipsSchema = new mongoose.Schema({
 	lectureInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}
 })
 
-// const transcriptionSchema = new mongoose.Schema({
-// 	transcriptionCollection: [{
-// 		startingOffset: {type: Number, required: true},
-// 		endingOffset: {type:Number, required: true},
-// 		transcription: {type:String, required: true}
-// 	}],
-// 	percentComplete: {type:Number, default: 0},
-// 	confidence: {type: Number},
-// 	createdAt: {type: Date, default: Date.now},
-
-// 	lectureInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}
-// })
-
 module.exports = {
 	User: mongoose.model('User', usersSchema),	
 	Category: mongoose.model('Category', categorySchema),

@@ -1,7 +1,7 @@
 import React from 'react'
-
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
+import User from '../models/userModel'
 
 import AddLectureForm from './components/adminComponents/addLectureForm.js'
 import NavBar from './components/navBar.js'
@@ -28,7 +28,7 @@ var AllCoursesPage = React.createClass({
 				<NavBar />
 				<h2>Course Page</h2>
 				<ElementList list={this.state.lectureCollection} />
-				<AddLectureForm courseId={this.props.course}/>
+				{User.getCurrentUser().get('admin')?<AddLectureForm courseId={this.props.course}/>:<div />}
 				<FooterBar />
 			</div>
 		) 

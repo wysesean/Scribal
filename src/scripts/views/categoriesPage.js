@@ -1,7 +1,7 @@
 import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
-
+import User from '../models/userModel'
 
 import AddCategoryForm from './components/adminComponents/addCategoryForm.js'
 import NavBar from './components/navBar.js'
@@ -22,12 +22,13 @@ var CategoriesPage = React.createClass({
 		return STORE.data
 	},
 	render() {
+		console.log(User.getCurrentUser().get('admin'))
 		return(
 			<div className="CategoriesPage">
 				<NavBar />
 				<h2>CategoriesPage</h2>
 				<ElementList list={this.state.categoryCollection} />
-				<AddCategoryForm />
+				{User.getCurrentUser().get('admin')?<AddCategoryForm />:<div />}
 				<FooterBar />
 			</div>
 		) 

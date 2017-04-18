@@ -7,17 +7,14 @@ const CLOUDINARY_URL = 'https://res.cloudinary.com/dd21qo4mj/video/upload'
 
 var RandomClip = React.createClass({
 	//Video with an initial undefined src needs to be loaded again
-	componentWillReceiveProps() {
-		if(this.clipVideoTag){
-			this.clipVideoTag.load()
-			var clipPlayer = videojs('clipPlayer')
-		}
+	componentDidMount() {
+		this.clipVideo = videojs(this.clipVideoTag)
 	},
 	// destroy player on unmount
 	componentWillUnmount() {
-	  if (this.clipVideoTag) {
-	    this.clipVideoTag.dispose()
-	  }
+	   this.clipVideo.dispose()
+	   this.clipVideo = undefined
+	 
 	},
 	render() {
 		let clipURL = ''
@@ -37,7 +34,7 @@ var RandomClip = React.createClass({
 		return(
 			<div className="data-vjs-player">
 				<video id='clipPlayer' ref={(input)=>this.clipVideoTag = input} className="video-js" { ...videoJsOptions }>
-				</video>
+								</video>
 				<TranscriptionInput clip={this.props.clip} set={randomNum}/>
 			</div>
 		) 

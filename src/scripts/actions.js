@@ -165,10 +165,9 @@ const ACTIONS = {
 	fetchLectureById(lectureId){
 		var lectureColl = new LectureCollection()
 		lectureColl.url = `/api/lecture/${lectureId}`
-		lectureColl
+		return lectureColl
 			.fetch()
 			.then(()=>{
-				console.log('second')
 				STORE.set({
 					lectureCollection: lectureColl
 				})
@@ -177,10 +176,9 @@ const ACTIONS = {
 	fetchTranscription(lectureId){
 		var transcriptionMod = new TranscriptionModel()
 		transcriptionMod.url = `/api/lecture/${lectureId}/getTranscription`
-		transcriptionMod
+		return transcriptionMod
 			.fetch()
 			.then(()=>{
-				console.log('first')
 				STORE.set({
 					transcriptionModel: transcriptionMod
 				})
