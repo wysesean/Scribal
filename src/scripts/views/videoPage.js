@@ -1,4 +1,6 @@
 import React from 'react'
+import videojs from 'video.js';
+import $ from 'jquery'
 
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
@@ -12,8 +14,13 @@ import FooterBar from './components/footerBar.js'
 
 var VideoPage = React.createClass({
 	componentWillMount(){
+		$.when(
+			ACTIONS.fetchTranscription(this.props.lecture)
+		)
+		.then(
+			ACTIONS.fetchLectureById(this.props.lecture)
+		)
 		ACTIONS.fetchRandomClip()
-		ACTIONS.fetchLectureById(this.props.lecture)
 		STORE.on('dataUpdated', ()=>{
 			this.setState(STORE.data)
 		})
@@ -31,7 +38,7 @@ var VideoPage = React.createClass({
 				<NavBar />
 				<h2>Video Page</h2>
 				{this.state.clipModel?<RandomClip clip={this.state.clipModel}/>:null}
-				{this.state.lectureCollection?<LectureVideo video={this.state.lectureCollection.models[0]}/>:null}
+				{this.state.lectureCollection?<LectureVideo video={this.state.lectureCollection.models[0]} transcription={this.state.transcriptionModel}/>:null}
 				<FooterBar />
 			</div>
 		) 
@@ -39,33 +46,54 @@ var VideoPage = React.createClass({
 })
 
 var LectureVideo = React.createClass({
-	//Video with an initial undefined src needs to be loaded again
+	// Video with an initial undefined src needs to be loaded again
 	componentWillReceiveProps() {
-		if(this.videoTag){
-			this.videoTag.load()
-			var startTime, endTime, message;
-		    var newTextTrack = this.videoTag.addTextTrack("captions", "sample");
-		    // newTextTrack.mode = newTextTrack.SHOWING; // set track to display
-		   // create some cues and add them to the new track 
-			for (var i = 0; i < 30; i++) {
-		    	startTime = i * 5;
-		    	endTime = ((i * 5) + 5);
-		    	message = "This is number " + i;
-		    	newTextTrack.addCue(new TextTrackCue(startTime, endTime, message));
-		    }
-		    this.videoTag.play()
+		if(this.mainVideoTag){
+			if(this.props.transcription.get('transcriptionCollection')){
+				var player = videojs('player')
+				//removes tracks created on re-render
+				if(player.textTracks().tracks_.length>1){
+					for(let i=0; i<=player.textTracks().tracks_.length;i++){
+						array.splice(0, 1);
+					}
+				}
+				var track = player.addTextTrack("captions", "English","en")
+				let transcriptionCollection = this.props.transcription.get('transcriptionCollection')
+				transcriptionCollection.forEach((el)=>{
+					console.log('adding cue', el.transcription)
+					track.addCue(new VTTCue(
+						el.startingOffset,
+						el.endingOffset,
+						el.transcription
+					))
+				})
+			track.mode = "showing";
+
+			}
 		}
+
+	},
+	// destroy player on unmount
+	componentWillUnmount() {
+	  if (this.mainVideoTag) {
+	    this.mainVideoTag.dispose()
+	  }
 	},
 	render(){
 		let srcURL = ''
 		if(this.props.video){
 			srcURL = this.props.video.get('videoURL')
 		}
+		const videoJsOptions = {
+			controls: true,
+			src: srcURL,
+			type: 'video/mp4',
+			width: 500,
+			height: 500
+		}
 		return(
-			<div className="LectureVideo">
-				<video ref={(input)=>this.videoTag = input} width="500" height="500" controls>
-				  	<source src={srcURL} type="video/mp4" />
-					Your browser does not support the video.
+			<div className="data-vjs-player">
+				<video id='player' ref={(input)=>this.mainVideoTag = input} className="video-js" { ...videoJsOptions }>
 				</video>
 			</div>
 		) 

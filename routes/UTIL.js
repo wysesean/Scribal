@@ -83,6 +83,9 @@ const UTIL = {
 
 	//Joins two seperate strings together by their longest common subsequence
 	stringJoiner(str1,str2){
+		if(str1&&!str2) return str1
+		if(str2&&!str1) return str2
+		if(!str1&&!str2) return ''
 	    if(str1.length===0) return str2
 	    if(str2.length===0) return str1
         str1.trim()

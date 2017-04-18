@@ -10,6 +10,7 @@ let Category = require('../db/schema.js').Category
 let Course = require('../db/schema.js').Course
 let Lecture = require('../db/schema.js').Lecture
 let Clips = require('../db/schema.js').Clips
+let Transcription = require('../db/schema.js').Transcription
 
 let UTIL = require('./UTIL.js')
 let vtt = require('./vtt.js')
@@ -229,7 +230,7 @@ apiRouter
   
 
   //TO DO
-  .get('/lecture/:_id/transcription', function(req, res){
+  .get('/lecture/:_id/getTranscription', function(req, res){
     Clips
         .find({lectureInfo:req.params._id}, function(err, results){
             if(err || !results) return res.json(err)
@@ -237,67 +238,26 @@ apiRouter
         .sort({clipIndex:'asc'})
         .exec(function(err,results){
             if (err) return res.json(err)
-           
-
-            //Inserts a new line at 30 length segments, doesn't break strings
-            function overFlowString(str){
-                let strArr = str.split(' '),
-                    counter = 0,
-                    segmentLength = 30
-                    
-                for(let i=0; i<strArr.length; i++){
-                    if(counter < segmentLength){
-                        counter += strArr[i].length
-                    }
-                    else{
-                        //adds a new line to the beginning of the word
-                        strArr[i] = strArr[i].replace(/^/,'\r\n')
-                        counter = 0
-                    }
-                }
-                return strArr.join(' ')
+            let transcription = {
+                lectureID: Clips.lectureInfo,
+                transcriptionCollection:[],
+                //TO DO
+                //percentComplete: %
+                //confidence: %
             }
-
-            //Pads numbers with 0s to fit webvtt format if needed
-            function pad(num){
-                num = num < 10 ? '0' + num : num
-                return num
-            }
-
-            //Converts seconds to 00:00:00.000 format
-            function secondsToTime(sec){
-                var seconds = (sec%60).toFixed(3),
-                    minutes = Math.floor(sec / 60) % 60,
-                    hours = Math.floor(sec / 60 / 60)   
-                return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-            }
-
-            //Generates a string that can be used in a vtt file
-            function vtt(){
-                var counter = 0,
-                    content = 'WEBVTT\r\n'
-                this.add = (startingOffset, endingOffset, line)=>{
-                    ++counter
-                    content += `\n\r${counter}\r\n${secondsToTime(startingOffset)} --> ${secondsToTime(endingOffset)} \r\n${overFlowString(line)}`
-                }
-                this.toString = function(){
-                    return content
-                }
-            }
-            
-            var v = new vtt()
-            // var v = new UTIL.vtt()
-            // var {vtt} = UTIL
-
-
             results.forEach((singleElement)=>{
                 let str1Best = UTIL.lowestDistance(singleElement.set1.transcriptionCollection),
                     str2Best = UTIL.lowestDistance(singleElement.set2.transcriptionCollection),
                     joined = UTIL.stringJoiner(str1Best, str2Best)
-                v.add(singleElement.set1.startingOffset, singleElement.set1.endingOffset, joined)
+                    transcription.transcriptionCollection.push({
+                        transcriptionIndex: singleElement.clipIndex,
+                        startingOffset: singleElement.set1.startingOffset,
+                        endingOffset: singleElement.set1.endingOffset,
+                        transcription: joined
+                    })
             })
-            console.log()
-            res.json(v.toString())
+
+            res.json(transcription)
         })
   })
 

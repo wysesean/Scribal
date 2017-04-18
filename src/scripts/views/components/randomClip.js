@@ -1,14 +1,23 @@
 import React from 'react'
 import ACTIONS from '../../actions.js'
+import videojs from 'video.js';
+
 
 const CLOUDINARY_URL = 'https://res.cloudinary.com/dd21qo4mj/video/upload'
 
 var RandomClip = React.createClass({
 	//Video with an initial undefined src needs to be loaded again
 	componentWillReceiveProps() {
-		if(this.videoTag){
-			this.videoTag.load()
+		if(this.clipVideoTag){
+			this.clipVideoTag.load()
+			var clipPlayer = videojs('clipPlayer')
 		}
+	},
+	// destroy player on unmount
+	componentWillUnmount() {
+	  if (this.clipVideoTag) {
+	    this.clipVideoTag.dispose()
+	  }
 	},
 	render() {
 		let clipURL = ''
@@ -18,11 +27,16 @@ var RandomClip = React.createClass({
 			var randomSet = randomNum ? set2 : set1
 			clipURL = `${CLOUDINARY_URL}/so_${randomSet.startingOffset},eo_${randomSet.endingOffset}/${lectureInfo.videoPublicId}.mp4`
 		}
+		const videoJsOptions = {
+			controls: true,
+			src: clipURL,
+			type: 'video/mp4',
+			width: 500,
+			height: 500
+		}
 		return(
-			<div className="RandomClip">
-				<video ref={(input)=>this.videoTag = input} width="500" height="500" controls>
-				  	<source id="rando" src={clipURL} type="video/mp4" />
-					Your browser does not support the video.
+			<div className="data-vjs-player">
+				<video id='clipPlayer' ref={(input)=>this.clipVideoTag = input} className="video-js" { ...videoJsOptions }>
 				</video>
 				<TranscriptionInput clip={this.props.clip} set={randomNum}/>
 			</div>

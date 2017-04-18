@@ -37,7 +37,7 @@ const AddVideoForm = React.createClass({
 				lectureImage: formEl.courseIndex.value,
 				description: formEl.description.value
 			}
-		ACTIONS.uploadVideo(formEl.fileUpload.files[0])
+		ACTIONS.uploadLecture(formEl.fileUpload.files[0])
 			.end((err, response)=>{
 				this.setState({
 					loadingGif:false

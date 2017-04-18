@@ -13,7 +13,7 @@ const errorHandler = function(err, req, res, next) {
 
 const cookifyUser = function(req,res,next) {
   if (req.user) {
-    res.cookie('Scribal' + '_user',JSON.stringify(req.user))
+    res.cookie('Scribal_user',JSON.stringify(req.user))
     next()
   }
   else {

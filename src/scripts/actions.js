@@ -8,6 +8,7 @@ import {CategoryModel, CategoryCollection} from './models/categoryCollection.js'
 import {CourseModel, CourseCollection} from './models/courseCollection.js'
 import {LectureModel, LectureCollection} from './models/lectureCollection.js'
 import ClipModel from './models/clipModel.js'
+import TranscriptionModel from './models/transcriptionModel.js'
 
 const CLOUDINARY_UPLOAD_PRESET = 'sjgfpzzo'
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dd21qo4mj/upload'
@@ -130,9 +131,9 @@ const ACTIONS = {
 		
 	},
 //---------------------
-//Video Actions
+//Lecture Actions
 //---------------------
-	uploadVideo(file){
+	uploadLecture(file){
 		let upload = request.post(CLOUDINARY_UPLOAD_URL)
 							.field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
 							.field('file',file)
@@ -160,7 +161,6 @@ const ACTIONS = {
 					lectureCollection: lectureColl
 				})
 			})
-
 	},
 	fetchLectureById(lectureId){
 		var lectureColl = new LectureCollection()
@@ -168,8 +168,21 @@ const ACTIONS = {
 		lectureColl
 			.fetch()
 			.then(()=>{
+				console.log('second')
 				STORE.set({
 					lectureCollection: lectureColl
+				})
+			})
+	},
+	fetchTranscription(lectureId){
+		var transcriptionMod = new TranscriptionModel()
+		transcriptionMod.url = `/api/lecture/${lectureId}/getTranscription`
+		transcriptionMod
+			.fetch()
+			.then(()=>{
+				console.log('first')
+				STORE.set({
+					transcriptionModel: transcriptionMod
 				})
 			})
 	},

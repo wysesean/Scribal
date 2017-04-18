@@ -2,6 +2,7 @@ import Backbone from 'backbone'
 import {CategoryCollection} from './models/categoryCollection.js'
 import {CourseCollection} from './models/courseCollection.js'
 import {LectureCollection} from './models/lectureCollection.js'
+import TranscriptionModel from './models/transcriptionModel.js'
 import ClipModel from './models/clipModel.js'
 
 const STORE = Object.assign({}, Backbone.Events, {
@@ -10,12 +11,14 @@ const STORE = Object.assign({}, Backbone.Events, {
 		categoryCollection: new CategoryCollection(),
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
+		transcriptionModel: new TranscriptionModel(),
 		clipModel: new ClipModel()
 	},
 	data_default:{
 		categoryCollection: new CategoryCollection(),
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
+		transcriptionModel: new TranscriptionModel(),
 		clipModel: new ClipModel()
 	},
 	get(prop){
