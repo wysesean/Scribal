@@ -82,7 +82,7 @@ apiRouter
     })
   })
 
-  .get('/category/:_categoryId/course/', function(req, res){
+  .get('/category/:_categoryId/course', function(req, res){
     Course.find({categoryInfo:req.params._categoryId}, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
@@ -120,7 +120,7 @@ apiRouter
 //-----------------------------------
 
 apiRouter
-  .post('/course/', function(req, res){
+  .post('/course', function(req, res){
     
     Category.findById(req.body.categoryId, function(err, results){
       if(err) return res.json(err)
@@ -140,7 +140,7 @@ apiRouter
     }).populate('categoryInfo')
   })
 
-  .get('/course/:_courseId/lecture/', function(req, res){
+  .get('/course/:_courseId/lecture', function(req, res){
     Lecture.find({courseInfo:req.params._courseId}, function(err, results){
       if(err || !results) return res.json(err)
       res.json(results)
@@ -317,7 +317,7 @@ apiRouter
     }).populate('lectureInfo')
   })
 
-  .put('/clips/:_id/', function(req, res){
+  .put('/clips/:_id', function(req, res){
     Clips.findByIdAndUpdate(req.params._id, req.body, function(err, record){
           if (err) {
             res.status(500).send(err)
