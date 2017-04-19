@@ -51,6 +51,16 @@ UserAuthModel.logout = function() {
 	})
 }
 
+UserAuthModel.updateUser = function(newUserData){
+	return $.ajax({
+		method: 'PUT',
+		type: 'json',
+		data: newUserData
+	}).then((userData) => {
+		
+	})
+}
+
 UserAuthModel.getCurrentUser = function() {
 	return JSON.parse(localStorage.getItem('Scribal'+ '_user')) ? new User(JSON.parse(localStorage.getItem('Scribal' + '_user'))) : null
 }

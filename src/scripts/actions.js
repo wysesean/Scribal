@@ -51,7 +51,7 @@ const ACTIONS = {
 //Category Actions
 //---------------------
 	addCategory(categoryObj){
-		var newCategory = new CategoryModel(categoryObj)
+		let newCategory = new CategoryModel(categoryObj)
 			newCategory
 				.save()
 				.done((resp)=>{
@@ -63,7 +63,7 @@ const ACTIONS = {
 				})
 	},
 	fetchCategories(){
-		var categoryColl = STORE.get('categoryCollection')
+		let categoryColl = STORE.get('categoryCollection')
 		categoryColl
 			.fetch()
 			.then(()=>{
@@ -76,7 +76,7 @@ const ACTIONS = {
 
 	},
 	deleteCategory(categoryId){
-		var category = STORE.data.categoryCollection.get(categoryId)
+		let category = STORE.data.categoryCollection.get(categoryId)
 		category
 			.destroy()
 			.done((resp)=>{
@@ -92,7 +92,7 @@ const ACTIONS = {
 //Course Actions
 //---------------------
 	addCourseToCategory(categoryId, courseObj){
-		var newCourse = new CourseModel(courseObj)
+		let newCourse = new CourseModel(courseObj)
 		newCourse.categoryId = categoryId
 			newCourse
 				.save()
@@ -106,7 +106,7 @@ const ACTIONS = {
 
 	},
 	fetchCoursesByCategory(categoryId){
-		var courseColl = STORE.get('courseCollection')
+		let courseColl = STORE.get('courseCollection')
 		courseColl.url = `/api/category/${categoryId}/course/`
 		courseColl
 			.fetch()
@@ -117,7 +117,7 @@ const ACTIONS = {
 			})
 	},
 	fetchCourseById(courseId){
-		var courseColl = STORE.get('courseCollection')
+		let courseColl = STORE.get('courseCollection')
 		courseColl.url = `/api/category/${courseId}`
 		courseColl
 			.fetch()
@@ -126,6 +126,35 @@ const ACTIONS = {
 					courseCollection: courseColl
 				})
 			})
+	},
+	enrollUser(courseId){
+		// var obj = {coursesSelected:[{course: courseId}]}
+		if(User.getCurrentUser().get('coursesSelected')){
+			if(User.getCurrentUser().get('coursesSelected')
+				.filter((el)=>{
+					return el.course === courseId
+				})
+				.length > 0
+			){
+				console.log('user already enrolled')
+				return
+			}
+		}
+		var userId=User.getCurrentUser().get('_id')
+		var payload = {course: courseId}
+		$.ajax({
+			method: 'PUT',
+			type: 'json',
+			url: `api/users/${userId}/enroll`,
+			data: payload
+		})
+		.then((res)=>{
+			localStorage.setItem('Scribal_user',JSON.stringify(res))
+			console.log('succesfully enrolled')
+		},(err)=>{
+			throw new Error(err.responseText)
+		})
+		
 	},
 	deleteCourse(courseId){
 		
@@ -140,7 +169,7 @@ const ACTIONS = {
 		return upload
 	},
 	addLectureToCourse(courseId,courseObj){
-		var newLecture = new LectureModel(courseObj)
+		let newLecture = new LectureModel(courseObj)
 			newLecture
 				.save()
 				.done((resp)=>{
@@ -152,7 +181,7 @@ const ACTIONS = {
 				})
 	},
 	fetchLectureByCourse(courseId){
-		var lectureColl = STORE.get('lectureCollection')
+		let lectureColl = STORE.get('lectureCollection')
 		lectureColl.url = `/api/course/${courseId}/lecture/`
 		lectureColl
 			.fetch()
@@ -163,7 +192,7 @@ const ACTIONS = {
 			})
 	},
 	fetchLectureById(lectureId){
-		var lectureColl = new LectureCollection()
+		let lectureColl = new LectureCollection()
 		lectureColl.url = `/api/lecture/${lectureId}`
 		return lectureColl
 			.fetch()
@@ -174,7 +203,7 @@ const ACTIONS = {
 			})
 	},
 	fetchTranscription(lectureId){
-		var transcriptionMod = new TranscriptionModel()
+		let transcriptionMod = new TranscriptionModel()
 		transcriptionMod.url = `/api/lecture/${lectureId}/getTranscription`
 		return transcriptionMod
 			.fetch()
@@ -192,7 +221,7 @@ const ACTIONS = {
 //Clips Actions
 //---------------------
 	fetchRandomClip(){
-		var clipMod = new ClipModel()
+		let clipMod = new ClipModel()
 		clipMod.url = `/api/clips/getRandomClip`
 		clipMod
 			.fetch()

@@ -13,7 +13,6 @@ let Clips = require('../db/schema.js').Clips
 let Transcription = require('../db/schema.js').Transcription
 
 let UTIL = require('./UTIL.js')
-let vtt = require('./vtt.js')
 //-----------------------------------
 // USER ROUTES
 //-----------------------------------
@@ -29,13 +28,12 @@ apiRouter
     User.findById(req.params._id, "-password", function(err, record){
       if(err || !record ) return res.json(err) 
       res.json(record)
-    })
+    }).populate({path:'coursesSelected'})
   })
   .put('/users/:_id', function(req, res){
-
     User.findByIdAndUpdate(req.params._id, req.body, function(err, record){
         if (err) {
-          res.status(500).send(err)
+          res.json(err)
         }
         else if (!record) {
           res.status(400).send('no record found with that id')
@@ -45,6 +43,23 @@ apiRouter
         }
     })
   })
+  .put('/users/:_id/enroll', function(req, res){
+    User.findById(req.params._id, function(err, record){
+        if (err) {
+          res.json(err)
+        }
+        else if (!record) {
+          res.status(400).send('no record found with that id')
+        }
+        else {
+          record.coursesSelected.push(req.body)
+          record.save((err, record)=>{
+            if(err) return res.status(500).json('Problem enrolling course')
+              res.json(record)
+          })
+        }
+    })
+  }) 
 
   .delete('/users/:_id', function(req, res){
     User.remove({ _id: req.params._id}, (err) => {
@@ -248,15 +263,30 @@ apiRouter
             results.forEach((singleElement)=>{
                 let str1Best = UTIL.lowestDistance(singleElement.set1.transcriptionCollection),
                     str2Best = UTIL.lowestDistance(singleElement.set2.transcriptionCollection),
-                    joined = UTIL.stringJoiner(str1Best, str2Best)
+                    joined = UTIL.stringJoiner(str1Best, str2Best),
+                    confidence = (UTIL.averageSimilarity(singleElement.set1.transcriptionCollection, str1Best)+
+                                  UTIL.averageSimilarity(singleElement.set2.transcriptionCollection, str2Best))/2
+                    if(!confidence){
+                      confidence = 0
+                    }
                     transcription.transcriptionCollection.push({
                         transcriptionIndex: singleElement.clipIndex,
                         startingOffset: singleElement.set1.startingOffset,
                         endingOffset: singleElement.set1.endingOffset,
-                        transcription: joined
+                        transcription: joined,
+                        clipConfidence: confidence
                     })
             })
-
+            let totalConfidence = 0
+            let completion = 0
+            transcription.transcriptionCollection.forEach((el)=>{
+              totalConfidence += el.clipConfidence
+              if(el.transcription){
+                ++completion
+              }
+            })
+            transcription.confidence = totalConfidence/transcription.transcriptionCollection.length
+            transcription.completion = completion/transcription.transcriptionCollection.length
             res.json(transcription)
         })
   })

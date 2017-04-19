@@ -1,6 +1,5 @@
 import React from 'react'
 import videojs from 'video.js';
-import $ from 'jquery'
 
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
@@ -51,7 +50,9 @@ var LectureVideo = React.createClass({
 			{},
 			()=>{
 				//Adds captions to the video
-				var track = this.mainVideo.addTextTrack("captions", "English","en")
+				let confidence = Math.floor(this.props.transcription.get('confidence') * 100)
+				let completion = Math.floor(this.props.transcription.get('completion') * 100)
+				let track = this.mainVideo.addTextTrack("captions", `English Completion_${completion}%  Accuracy_${confidence}%`,"en")
 				let transcriptionCollection = this.props.transcription.get('transcriptionCollection')
 				transcriptionCollection.forEach((el)=>{
 					track.addCue(new VTTCue(

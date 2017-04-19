@@ -83,11 +83,9 @@ const UTIL = {
 
 	//Joins two seperate strings together by their longest common subsequence
 	stringJoiner(str1,str2){
-		if(str1&&!str2) return str1
-		if(str2&&!str1) return str2
+		if(str1&&!str2||str2.length===0) return str1
+		if(str2&&!str1||str1.length===0) return str2
 		if(!str1&&!str2) return ''
-	    if(str1.length===0) return str2
-	    if(str2.length===0) return str1
         str1.trim()
         str2.trim()
 	    var commonString = this.commonSubstring(str1, str2).trim()
@@ -99,51 +97,33 @@ const UTIL = {
         )
 	},
 
-	//Inserts a new line at 30 length segments, doesn't break strings
-	// overFlowString(str){
-	// 	let strArr = str.split(' '),
-	//     	counter = 0,
-	//         segmentLength = 30
-	        
-	//     for(let i=0; i<strArr.length; i++){
-	//     	if(counter < segmentLength){
-	//         	counter += strArr[i].length
-	//         }
-	//         else{
-	// 			//adds a new line to the beginning of the word
-	//             strArr[i] = strArr[i].replace(/^/,'\r\n')
-	//             counter = 0
-	//         }
-	//     }
-	//     return strArr.join(' ')
-	// },
+	//Returns the average similarity of one string against strings in an array.
+	//Essentially this returns the "confidence" of the string when making a subtitle
+	averageSimilarity(arr, str){		
+    	var average = 0
+        var total = arr.length
+        arr.forEach((el)=>{
+        	average += this.similarity(el,str)
+        })
+        return average/total
+	},
 
-	// //Pads numbers with 0s to fit webvtt format if needed
-	// pad(num){
-	// 	num = num < 10 ? '0' + num : num
-	// 	return num
-	// },
+	//Returns the similarity of one string compared to another.
+	similarity(str1, str2) {
+		if(!str1||!str2) return 0
 
-	// //Converts seconds to 00:00:00.000 format
- // 	secondsToTime(sec){
- //        var seconds = (sec%60).toFixed(3),
- //            minutes = Math.floor(sec / 60) % 60,
- //            hours = Math.floor(sec / 60 / 60)	
- //        return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
- //    },
-
-	// //Generates a string that can be used in a vtt file
-	// vtt(){
- //        var counter = 0,
- //            content = 'WEBVTT\r\n'
- //        this.add = function(startingOffset, endingOffset, line){
- //            ++counter
- //            content += `\n\r${counter}\r\n${secondsToTime(startingOffset)} --> ${secondsToTime(endingOffset)} \r\n${overFlowString(line)}`
- //        }
- //        this.toString = function(){
- //            return content
- //        }
- //    }
+		var longer = str1;
+		var shorter = str2;
+		if (str1.length < str2.length){
+			longer = str2;
+			shorter = str1;
+		}
+		var longerLength = longer.length;
+		if (longerLength == 0) {
+			return 1.0;
+		}
+		return (longerLength - this.levenshtein_distance(longer, shorter)) / parseFloat(longerLength);
+	},
 }
 
 module.exports = UTIL

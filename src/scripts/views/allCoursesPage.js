@@ -50,14 +50,18 @@ var ElementList = React.createClass({
 })
 
 var ListItem = React.createClass({
-	handleButton(categoryId){
-		location.hash = `course/${categoryId}`
+	enrollButton(courseId){
+		ACTIONS.enrollUser(courseId)
+	},
+	handleButton(courseId){
+		location.hash = `course/${courseId}`
 	},
 	render(){
 		return(
 			<div className="ListItem">
 				<p>Category: {this.props.listItemInfo.attributes.courseName}</p>
 				<p>Description: {this.props.listItemInfo.attributes.description}</p>
+				<button onClick={()=>{this.enrollButton(this.props.listItemInfo.attributes._id)}}>Enroll</button>
 				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See Course </button>
 				<br />
 			</div>
