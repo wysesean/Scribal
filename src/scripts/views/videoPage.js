@@ -11,6 +11,9 @@ import FooterBar from './components/footerBar.js'
 
 var VideoPage = React.createClass({
 	componentWillMount(){
+		if(User.getCurrentUser()){
+			ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
+		}
 		ACTIONS.fetchTranscription(this.props.lecture)
 			.then(()=> {
 				ACTIONS.fetchLectureById(this.props.lecture)
@@ -52,7 +55,7 @@ var LectureVideo = React.createClass({
 				//Adds captions to the video
 				let confidence = Math.floor(this.props.transcription.get('confidence') * 100)
 				let completion = Math.floor(this.props.transcription.get('completion') * 100)
-				let track = this.mainVideo.addTextTrack("captions", `English Completion_${completion}%  Accuracy_${confidence}%`,"en")
+				let track = this.mainVideo.addTextTrack("captions", `English Completion_${completion}%  Confidence_${confidence}%`,"en")
 				let transcriptionCollection = this.props.transcription.get('transcriptionCollection')
 				transcriptionCollection.forEach((el)=>{
 					track.addCue(new VTTCue(

@@ -11,8 +11,8 @@ var HomePage = React.createClass({
 			<div className="HomePage">
 				<NavBar />
 				<h2>HomePage</h2>
-				{User.getCurrentUser()?<h2>Current user = {User.getCurrentUser().get('email')}</h2>:""}
-				<UserDashboard />
+				{User.getCurrentUser()?<h2>Current user = {User.getCurrentUser().get('email')}</h2>:<div />}
+				{User.getCurrentUser()?<UserDashboard />:<div />}
 				<FooterBar />
 			</div>
 		) 		

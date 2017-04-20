@@ -51,7 +51,9 @@ var ElementList = React.createClass({
 
 var ListItem = React.createClass({
 	enrollButton(courseId){
-		ACTIONS.enrollUser(courseId)
+		if(User.getCurrentUser()){
+			ACTIONS.enrollUserToCourse(User.getCurrentUser().get('_id'),courseId)
+		}
 	},
 	handleButton(courseId){
 		location.hash = `course/${courseId}`

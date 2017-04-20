@@ -49,7 +49,6 @@ authRouter
           else {
             delete user.password
             //populate that stuff
-            console.log(user)
             res.json(user)
             // User.findById(user._id, function(err, record){
             //   if(err || !record ) return res.json(err) 

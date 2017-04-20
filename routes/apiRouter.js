@@ -6,6 +6,7 @@ let helpers = require('../config/helpers.js')
 //MODELS
 //--------------
 let User = require('../db/schema.js').User
+let Enrollment = require('../db/schema.js').Enrollment
 let Category = require('../db/schema.js').Category
 let Course = require('../db/schema.js').Course
 let Lecture = require('../db/schema.js').Lecture
@@ -43,23 +44,6 @@ apiRouter
         }
     })
   })
-  .put('/users/:_id/enroll', function(req, res){
-    User.findById(req.params._id, function(err, record){
-        if (err) {
-          res.json(err)
-        }
-        else if (!record) {
-          res.status(400).send('no record found with that id')
-        }
-        else {
-          record.coursesSelected.push(req.body)
-          record.save((err, record)=>{
-            if(err) return res.status(500).json('Problem enrolling course')
-              res.json(record)
-          })
-        }
-    })
-  }) 
 
   .delete('/users/:_id', function(req, res){
     User.remove({ _id: req.params._id}, (err) => {
@@ -71,6 +55,66 @@ apiRouter
     })  
   })
 
+//-----------------------------------
+//ENROLLMENT ROUTES
+//-----------------------------------
+apiRouter
+  .post('/users/enrollment', function(req, res){
+    Enrollment.find({userInfo:req.body.userInfo,courseInfo:req.body.courseInfo}, function(err, results){
+    	console.log(results)
+      if(err||results.length>0) return res.status(500).json('User already enrolled in course')      
+      
+      let newEnrolled = new Enrollment(req.body)
+      newEnrolled.save((err, enrollmentRecord)=>{
+        if(err) return res.status(500).json('Problem adding enrollment to database')
+        res.json(enrollmentRecord)
+      })
+    })
+  })
+  //Logs videos watched by user
+  .put('/users/:_userId/lecture/:_lectureId/watched', function(req, res){
+		Lecture.findById(req.params._lectureId, function(err, lectureResults){
+			if(err||!lectureResults) return res.json(err)
+
+			Enrollment.find({userInfo:req.params._userId,courseInfo:lectureResults.courseInfo}, function(err, results){
+				if(err||!results) return res.status(500).json('Error finding user')
+					console.log(results)
+				results[0].lecturesWatched.push(req.params._lectureId)
+				results[0].save((err, record)=>{
+					if(err) return res.status(500).json('Problem saving watched record')
+					res.json(record)
+				})
+			})
+		})
+  })
+
+  .delete('/users/:_userId/enrollment/:_courseId', function(req, res){
+    Enrollment.remove({userInfo:req.params._userId, courseInfo:req.params._courseId}, (err)=>{
+      if(err) return res.json(err)
+      res.json({
+        msg: `user: ${req.params._userId} successfully unenrolled from ${req.params._courseId}`,
+      })
+    })
+  })
+
+  .get('/users/:_id/enrollment', function(req, res){
+    Enrollment
+      .find({userInfo:req.params._id},'-password', function(err, results){
+        if(err||!results) return res.json(err)
+      })
+      .populate('courseInfo')
+      .populate('userInfo')
+      .populate(
+        {
+          path:'lecturesWatched',
+          model:'Lecture'     
+      })
+      .exec((err, result)=>{
+        res.json(result)
+      })
+  })
+
+  
 //-----------------------------------
 //CATEGORY ROUTES
 //-----------------------------------
@@ -192,10 +236,8 @@ apiRouter
 //VIDEO ROUTES
 //-----------------------------------
 
-//Posting a lecture also uploads the lecture to cloudinary. 
-//A refrence is 
-//Posting lectures also creates 15second segmented clips of the lecture
-
+//Posting a lecture also uploads it to cloudinary then 
+//Posting lectures also creates 7second segmented clips of the lecture with a matching set that is at a 2 second offset
 apiRouter
   .post('/lecture', function(req, res){
     console.log('posting lecture')

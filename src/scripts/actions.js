@@ -7,6 +7,7 @@ import User from './models/userModel.js'
 import {CategoryModel, CategoryCollection} from './models/categoryCollection.js'
 import {CourseModel, CourseCollection} from './models/courseCollection.js'
 import {LectureModel, LectureCollection} from './models/lectureCollection.js'
+import {EnrollmentModel, EnrollmentCollection} from './models/enrollmentCollection.js'
 import ClipModel from './models/clipModel.js'
 import TranscriptionModel from './models/transcriptionModel.js'
 
@@ -20,31 +21,89 @@ const ACTIONS = {
 //---------------------
 	registerUser(formData) {
 		User.register(formData)
-			.done((response) => {
-				console.log('register success', response)
+			.done((resp) => {
+				console.log('register success', resp)
 				ACTIONS.loginUser(formData.email, formData.password)
 			})
-			.fail((error)=> console.log('register fail', error)) 
+			.fail((err)=> console.log('register fail', err)) 
 	},
 	loginUser(email, password) {
 		User.login(email, password) 
-			.done((response) => {
-				console.log('login success', response)
+			.done((resp) => {
+				console.log('login success')
 				location.hash = 'home'
 			})
-			.fail((error)=>{
-				console.log('login fail', error)
+			.fail((err)=>{
+				console.log('login fail', err)
 			})
 	},
 	logoutUser() {
 		User.logout()
-			.done((response) => {
-				console.log('you logged out', response)
+			.done((resp) => {
+				console.log('you logged out', resp)
 				location.hash = 'login'
 			})
-			.fail((error) => {
-				console.log('problem logging out', error)
+			.fail((err) => {
+				console.log('problem logging out', err)
 			})
+	},
+
+//---------------------
+//Enrollment Actions
+//---------------------
+	enrollUserToCourse(userId,courseId){		
+		let payload = {
+			courseInfo: courseId,
+			userInfo: userId,
+		}
+		let newEnroll = new EnrollmentModel(payload)
+		newEnroll.url = `/api/users/enrollment`
+		newEnroll
+			.save()
+			.done((resp)=>{
+				console.log('succesful enrollment',resp)
+				ACTIONS.fetchUserEnrolledCourses(userId)
+			})
+			.fail((err)=>{
+				console.log('error enrolling', err)
+			})
+	},
+	unenrollUserFromCourse(userId,enrollId){
+		var enrolledCourse = STORE.get('enrollmentCollection').get(enrollId)
+		enrolledCourse.url = `/api/users/${userId}/enrollment/${enrollId}`
+		enrolledCourse
+			.destroy()
+			.done((resp)=>{
+				console.log('course unenrolled', resp)
+			})
+			.fail((err)=>{
+				console.log('problem unenrolling', err)
+			})
+	},
+	fetchUserEnrolledCourses(userId){
+		let enrollColl = STORE.get('enrollmentCollection')
+		enrollColl.url = `/api/users/${userId}/enrollment/`
+		enrollColl
+			.fetch()
+			.then(()=>{
+				STORE.set({
+					enrollmentCollection: enrollColl
+				})
+			})
+	},
+	userWatchedLecture(userId, lectureId){
+		console.log('action called')
+		$.ajax({
+			method: 'PUT',
+			type: 'json',
+			url:`api/users/${userId}/lecture/${lectureId}/watched`
+		})
+		.done((resp)=>{
+			console.log('succesfully entered lecturewatched record')
+		})
+		.fail((err)=>{
+			console.log('error recording lecturewatched', err)
+		})
 	},
 
 //---------------------
@@ -75,6 +134,8 @@ const ACTIONS = {
 	updateCategory(categoryId, updateObj){
 
 	},
+
+	//TO DO OVERHAUL THIS
 	deleteCategory(categoryId){
 		let category = STORE.data.categoryCollection.get(categoryId)
 		category
@@ -127,35 +188,8 @@ const ACTIONS = {
 				})
 			})
 	},
-	enrollUser(courseId){
-		// var obj = {coursesSelected:[{course: courseId}]}
-		if(User.getCurrentUser().get('coursesSelected')){
-			if(User.getCurrentUser().get('coursesSelected')
-				.filter((el)=>{
-					return el.course === courseId
-				})
-				.length > 0
-			){
-				console.log('user already enrolled')
-				return
-			}
-		}
-		var userId=User.getCurrentUser().get('_id')
-		var payload = {course: courseId}
-		$.ajax({
-			method: 'PUT',
-			type: 'json',
-			url: `api/users/${userId}/enroll`,
-			data: payload
-		})
-		.then((res)=>{
-			localStorage.setItem('Scribal_user',JSON.stringify(res))
-			console.log('succesfully enrolled')
-		},(err)=>{
-			throw new Error(err.responseText)
-		})
-		
-	},
+
+	//TO DO OVERHAUL THIS
 	deleteCourse(courseId){
 		
 	},
@@ -213,6 +247,8 @@ const ACTIONS = {
 				})
 			})
 	},
+
+	//TO DO OVERHAUL THIS
 	deleteLecture(videoId){
 
 	},

@@ -1,12 +1,29 @@
 import React from 'react'
 import User from '../../models/userModel.js'
+import ACTIONS from '../../actions.js'
+import STORE from '../../store.js'
 
 var UserDashboard = React.createClass({
+	getInitialState(){
+		return STORE.data
+	},
+	componentWillMount(){
+		if(User.getCurrentUser()){
+			ACTIONS.fetchUserEnrolledCourses(User.getCurrentUser().get('_id'))
+		}
+		STORE.on('dataUpdated', ()=>{
+			this.setState(STORE.data)
+		})
+	},
+	componentWillUnmount(){
+		STORE.reset()
+		STORE.off('dataUpdated')
+	},
 	render(){
 		return(
 			<div className="UserDashboard">
 				<p>User dashboard</p>
-				<CoursesEnrolled courses={User.getCurrentUser().get('coursesSelected')} />
+				<CoursesEnrolled courses={this.state.enrollmentCollection} />
 			</div>
 		) 
 	}
@@ -15,12 +32,21 @@ var UserDashboard = React.createClass({
 
 var CoursesEnrolled = React.createClass({
 	createCourses(el){
-		return (<Course key={el._id}courseInfo={el} />)
+		var courseProps = {
+			name: el.get('courseInfo').courseName,
+			description: el.get('courseInfo').description,
+			courseImg: el.get('courseInfo').courseImg,
+			linkId: el.get('courseInfo')._id,
+			enrollDate: el.get('courseInfo').createdAt,
+			percentageComplete: el.get('percentageComplete'),
+			lecturesWatched: el.get('lecturesWatched')
+		}
+		return (<Course key={el.cid} {...courseProps}/>)
 	},
 	render(){
 		return(
 			<div className="CoursesEnrolled">
-				{this.props.courses.map(this.createCourses)}
+				{this.props.courses.models.map(this.createCourses)}
 			</div>
 		) 
 	}
@@ -28,10 +54,9 @@ var CoursesEnrolled = React.createClass({
 
 var Course = React.createClass({
 	render() {
-		console.log(this.props)
 		return(
 			<div className="Course">
-				<p>Course id = {this.props.courseInfo.course}</p>
+				<p>Course id = {this.props.name}</p>
 			</div>
 		) 
 	}

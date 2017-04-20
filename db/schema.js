@@ -7,18 +7,25 @@ const usersSchema = new mongoose.Schema({
 	email: {type: String, required: true},
 	password: {type: String, required: true},
 	name: {type: String, required: true},
-	coursesSelected: [{
-		course: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
-		videosCompleted: {type: mongoose.Schema.Types.ObjectId, ref: 'Video'},
-		progress: {type: Number, default: 0},
-		createdAt: {type: Date, default: Date.now}
-	}],
 	admin: {type: Boolean, default: false},
 	createdAt: {type: Date, default: Date.now}
 })
 
 //-----------------------
-//COURSES AND VIDEOS
+//ENROLLMENT
+//-----------------------
+const enrollmentSchema = new mongoose.Schema({
+	courseInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
+	userInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+	lecturesWatched: [
+		{type: mongoose.Schema.Types.ObjectId, ref: 'Lecture'}
+	],
+	percentageComplete: {type: Number, default: 0},
+	createdAt: {type: Date, default: Date.now} 
+})
+
+//-----------------------
+//CATEGORY
 //-----------------------
 const categorySchema = new mongoose.Schema({
 	categoryName: {type: String, required:true},
@@ -28,6 +35,9 @@ const categorySchema = new mongoose.Schema({
 	createdAt: {type: Date, default: Date.now}
 })
 
+//-----------------------
+//COURSE
+//-----------------------
 const courseSchema = new mongoose.Schema({
 	courseName: {type: String, required: true},
 	courseImage: {type: String},
@@ -37,6 +47,9 @@ const courseSchema = new mongoose.Schema({
 	createdAt: {type: Date, default: Date.now }
 })
 
+//-----------------------
+//LECTURE
+//-----------------------
 const lectureSchema = new mongoose.Schema({
 	lectureTitle: {type:String, required: true},
 	videoURL: {type: String, required: true},
@@ -51,6 +64,9 @@ const lectureSchema = new mongoose.Schema({
 	createdAt: {type: Date, default: Date.now}
 })
 
+//-----------------------
+//CLIPS
+//-----------------------
 const clipsSchema = new mongoose.Schema({
 	set1: {
 		startingOffset: {type: Number, required: true},
@@ -75,5 +91,5 @@ module.exports = {
 	Course: mongoose.model('Course', courseSchema),
 	Lecture: mongoose.model('Lecture', lectureSchema),
 	Clips: mongoose.model('Clips', clipsSchema),
-	// Transcription: mongoose.model('Transcription',transcriptionSchema)
+	Enrollment: mongoose.model('Enrollment', enrollmentSchema)
 }
