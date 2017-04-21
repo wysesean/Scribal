@@ -12,9 +12,7 @@ var RandomClip = React.createClass({
 	},
 	// destroy player on unmount
 	componentWillUnmount() {
-	   this.clipVideo.dispose()
-	   this.clipVideo = undefined
-	 
+	   this.clipVideo.dispose()	 
 	},
 	render() {
 		let clipURL = ''

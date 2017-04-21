@@ -2,6 +2,7 @@ import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 import UTIL from '../util.js'
+import { Parallax } from 'react-parallax'
 
 import AddCourseForm from './components/adminComponents/addCourseForm.js'
 import NavBar from './components/navBar.js'
@@ -25,7 +26,10 @@ var AllCoursesPage = React.createClass({
 		return(
 			<div className="AllCoursesPage">
 				<NavBar />
-				<h2>AllCoursesPage</h2>
+				<Parallax bgImage="../images/2.jpg" strength={400}>
+					<br />
+					<center><h1>Browse online courses</h1></center>
+				</Parallax>
 				<ElementList list={this.state.courseCollection} />
 				{UTIL.renderAdminComponent(<AddCourseForm categoryId={this.props.category}/>)}
 				<FooterBar />
@@ -63,7 +67,7 @@ var ListItem = React.createClass({
 			<div className="ListItem">
 				<p>Category: {this.props.listItemInfo.attributes.courseName}</p>
 				<p>Description: {this.props.listItemInfo.attributes.description}</p>
-				<button onClick={()=>{this.enrollButton(this.props.listItemInfo.attributes._id)}}>Enroll</button>
+				{User.getCurrentUser()?<button onClick={()=>{this.enrollButton(this.props.listItemInfo.attributes._id)}}>Enroll</button>:<div />}
 				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See Course </button>
 				<br />
 			</div>

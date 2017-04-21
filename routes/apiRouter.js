@@ -31,6 +31,16 @@ apiRouter
       res.json(record)
     }).populate({path:'coursesSelected'})
   })
+  
+  //TO DO
+  // .get('/users/getUserCount', function(req, res){
+  // 	Users.count({},function(err, result){
+  //     if(err) return res.json(err)
+  //     console.log(result)
+  //     res.json(result)
+  //   })
+  // })
+  
   .put('/users/:_id', function(req, res){
     User.findByIdAndUpdate(req.params._id, req.body, function(err, record){
         if (err) {
@@ -235,7 +245,7 @@ apiRouter
 //VIDEO ROUTES
 //-----------------------------------
 
-//Posting a lecture also uploads it to cloudinary then 
+//Posting a lecture also uploads it to cloudinary
 //Posting lectures also creates 7second segmented clips of the lecture with a matching set that is at a 2 second offset
 apiRouter
   .post('/lecture', function(req, res){

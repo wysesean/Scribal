@@ -14,39 +14,82 @@ import TranscriptionModel from './models/transcriptionModel.js'
 const CLOUDINARY_UPLOAD_PRESET = 'sjgfpzzo'
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dd21qo4mj/upload'
 
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": true,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": true,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "3000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+
 const ACTIONS = {
 
 //---------------------
 //User Actions
 //---------------------
 	registerUser(formData) {
-		User.register(formData)
-			.done((resp) => {
-				console.log('register success', resp)
-				ACTIONS.loginUser(formData.email, formData.password)
-			})
-			.fail((err)=> console.log('register fail', err)) 
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
+			User.register(formData)
+				.done((resp) => {
+					console.log('register success', resp)
+					ACTIONS.loginUser(formData.email, formData.password)
+				})
+				.fail((err)=> {
+					console.log('register fail', err)
+					toastr.error("Oops! Try again")
+				})
+		}
+		else{
+		}
 	},
+
 	loginUser(email, password) {
-		User.login(email, password) 
-			.done((resp) => {
-				console.log('login success')
-				location.hash = 'home'
-			})
-			.fail((err)=>{
-				console.log('login fail', err)
-			})
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+			User.login(email, password) 
+				.done((resp) => {
+					console.log('login success')
+					toastr.success("Welcome to Scribal!")
+					location.hash = 'home'
+				})
+				.fail((err)=>{
+					toastr.warning("Oops! Try again.")
+					console.log('login fail', err)
+				})
+		}
+		else{
+			toastr.warning("Oops! Try again.")
+		}
 	},
 	logoutUser() {
 		User.logout()
 			.done((resp) => {
 				console.log('you logged out', resp)
+				toastr.success('See you later!')
 				location.hash = 'login'
 			})
 			.fail((err) => {
 				console.log('problem logging out', err)
 			})
 	},
+	// fetchUserCount(){
+	// 	return $.ajax({
+	// 		method: 'GET',
+	// 		type: 'json',
+	// 		url:'api/users/getUserCount'
+	// 	})
+	// 	.done((resp)=>{console.log('server sent back',resp)})
+	// 	.fail((err)=>err)
+	// },
 
 //---------------------
 //Enrollment Actions
@@ -131,6 +174,8 @@ const ACTIONS = {
 				})
 			})
 	},
+
+	//TO DO
 	updateCategory(categoryId, updateObj){
 
 	},

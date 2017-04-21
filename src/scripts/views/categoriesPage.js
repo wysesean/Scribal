@@ -2,13 +2,17 @@ import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 import UTIL from '../util.js'
+import { Parallax } from 'react-parallax'
 
 import AddCategoryForm from './components/adminComponents/addCategoryForm.js'
 import NavBar from './components/navBar.js'
 import FooterBar from './components/footerBar.js'
-
+import LiveBackground from './components/liveBackground.js'
 
 var CategoriesPage = React.createClass({
+	getInitialState(){
+		return STORE.data
+	},
 	componentWillMount(){
 		ACTIONS.fetchCategories()
 		STORE.on('dataUpdated', ()=>{
@@ -19,14 +23,15 @@ var CategoriesPage = React.createClass({
 		STORE.reset()
 		STORE.off('dataUpdated')
 	},
-	getInitialState(){
-		return STORE.data
-	},
 	render() {
 		return(
 			<div className="CategoriesPage">
 				<NavBar />
-				<h2>CategoriesPage</h2>
+						<Parallax bgImage="../images/1.jpg" strength={400}>
+							<br />
+							<center><h1>Online course categories</h1></center>
+						</Parallax>
+				<h3>Find your interests by browsing our online course categories. Start learning with a great university.</h3>
 				<ElementList list={this.state.categoryCollection} />
 				{UTIL.renderAdminComponent(<AddCategoryForm />)}
 				<FooterBar />

@@ -1,16 +1,19 @@
 import React from 'react'
 import User from '../models/userModel.js'
+import ACTIONS from '../actions.js'
 
 import NavBar from './components/navBar.js'
 import LiveBackground from './components/liveBackground.js'
 import FooterBar from './components/footerBar.js'
 
-var DashboardPage = React.createClass({
+var HomePage = React.createClass({
 	render(){
 		return(
-			<div className="DashboardPage">
+			<div className="HomePage">
 				<NavBar />
+				<MainText />
 				<LiveBackground />
+				<HomePageFoot />
 				<FooterBar />
 			</div>
 		) 		
@@ -18,4 +21,25 @@ var DashboardPage = React.createClass({
 	}
 })
 
-export default DashboardPage
+var MainText = React.createClass({
+	render() {
+		return(
+			<div className="MainText">
+				<h1 className="flow-text">What would you like to learn?</h1>
+				<a href="#categories" className="waves-effect waves-light btn">Browse free online courses</a>
+			</div>
+		) 
+	}
+})
+
+var HomePageFoot = React.createClass({
+	render() {
+		return(
+			<div className="HomePageFoot">
+				<p className="flow-text">Join <span className="peopleNum">7</span> people helping make education more accessible. Learn together as a community at Scribal. Try high quality online education brought to you by <a href="http://www.berkeley.edu/"><span className="berkeleyLink">Berkeley University.</span></a></p> 
+			</div>
+		) 
+	}
+})
+
+export default HomePage

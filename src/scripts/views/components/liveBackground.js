@@ -84,6 +84,9 @@ var LiveBackbround = React.createClass({
         }
 
     },
+    componentWillUnmount(){
+        window.removeEventListener('resize', ()=>livePattern.handleResize())
+    },
     render: function() {
         return(
             <canvas ref={(e)=>this.canvasTag = e} id='canvas'>  

@@ -11,9 +11,9 @@ import FooterBar from './components/footerBar.js'
 
 var VideoPage = React.createClass({
 	componentWillMount(){
-		if(User.getCurrentUser()){
-			ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
-		}
+		// if(User.getCurrentUser()){
+		// 	ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
+		// }
 		ACTIONS.fetchTranscription(this.props.lecture)
 			.then(()=> {
 				ACTIONS.fetchLectureById(this.props.lecture)
@@ -36,8 +36,8 @@ var VideoPage = React.createClass({
 			<div className="VideoPage">
 				<NavBar />
 				<h2>Video Page</h2>
-				{this.state.clipModel.get('lectureInfo')?<RandomClip clip={this.state.clipModel}/>:null}
-				{this.state.transcriptionModel.get('transcriptionCollection')&&this.state.lectureCollection.models[0]?<LectureVideo video={this.state.lectureCollection.models[0]} transcription={this.state.transcriptionModel}/>:null}
+				{this.state.clipModel.get('lectureInfo')?<RandomClip clip={this.state.clipModel}/>:<div />}
+				{this.state.transcriptionModel.get('transcriptionCollection')&&this.state.lectureCollection.models[0]?<LectureVideo video={this.state.lectureCollection.models[0]} transcription={this.state.transcriptionModel}/>:<div />}
 
 				<FooterBar />
 			</div>
@@ -71,7 +71,6 @@ var LectureVideo = React.createClass({
 	// destroy player on unmount
 	componentWillUnmount() {
 	  this.mainVideo.dispose()
-	  this.mainVideo = undefined
 	},
 	render(){
 		let videoOptions = {

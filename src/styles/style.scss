@@ -20,7 +20,7 @@ $yellow: #F5CB5C;
 $darkBlack: #242423;
 $gray: #333533;
 $platinum: #E8EDDF;
-$lightGray: #CFDBD5;
+$lightGray: #fbfbfb;
 
 
 
@@ -31,27 +31,47 @@ $lightGray: #CFDBD5;
   padding: 0;
 }
 
-.container{
-  width: 100%;
+body{
   height: 100vh;
+  width: 100vw;
 }
 
-canvas{
-  height: 100%;
-  width: 100%;
+.container{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
 }
+.material-icons{
+  color: $darkBlack;
+}
+
+
+//=============
+//Components
+//=============
+canvas{
+  position: fixed;
+  top:0;
+  left:0;
+  min-height: 100px;
+  width: 100%;
+  z-index: -100;
+}
+
 
 nav{
   ul li a{
-    color: #F5CB5C;
+    color: $gray;
     font-family: $main-text;
     font-weight: bold;
     font-size: 18px;
     
     &:hover{
-        color: blue;
-        transition: all .5s ease;
-        background-color:white;
+      color: $yellow;
+      transition: all .25s ease;
+      background-color:white;
+      font-weight: bold;
+      font-size: 18px;
       }
   }
    .brand-logo{
@@ -59,12 +79,138 @@ nav{
      font-family: $lobster;
      font-weight: bold;
      font-size: 32px;
+
+      &:hover{
+        color: $yellow;
+        transition: all .25s ease;
+     }
+   }
+
+   .btn{
+    background: $yellow;
+    border-radius: 0px;
+    box-shadow: none;
+      &:hover{
+        animation:none;
+        box-shadow: none;
+        background: $yellow;
+        color: white;
+        transform: none;
+      }
    }
 }
 
 
+//=============
+//VIEWS
+//=============
+.HomePage{
+
+  .MainText{
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    h1{
+      font-family: $main-text;
+      color: $gray;
+      font-weight: 900;
+      font-size: 10vh
+    }
+    a{
+      text-transform: none;
+      box-shadow: none;
+      background: $yellow;
+
+      :hover{
+        background: lighten($yellow, 50%);
+      }
+    }
+
+  }
+
+  .HomePageFoot{
+    position: fixed;
+    bottom:0;
+    left: 0;
+    background-color: $lightGray;
+    z-index: 10;
+    height: 25%;
+    width: 100vw;
+    padding: 2.5% 10% 5% 10%;
+
+    p{
+      font-family: $main-text;
+      font-weight: bold;
+      text-align: center;
+
+      .peopleNum{
+        color: $yellow;
+      }
+      .berkeleyLink{
+        color: $yellow;
+        text-decoration: underline;
+      }
+    }
+  }
+}
 
 
+.LoginPage{
+  .yellowText{
+    color: $yellow;
+  }
+
+  .login-container{
+    background-color:$lightGray;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 80px;
+    width: 50%;
+    height: 75%;
+  }
+
+  .tabs .indicator{
+    height: 60px;
+    opacity: 0.3;
+    a{
+      color: $gray;
+    }
+    :hover{
+      cursor: pointer;
+    }
+  }
+
+  .form-container{
+    padding: 40px;
+    padding-top: 10px;
+    .input-field{
+      color: orange;
+    }
+    h3{
+      color: $yellow;
+      cursor: pointer;
+    }
+  }
+
+  .confirmation-tabs-btn{
+    background-color: $gray;
+    position: absolute;
+  }
+}
+
+.CategoriesPage{
+  h3{
+    font-family: $main-text;
+    font-size: 18px;
+    text-align: center;
+    padding: 5% 15% 5% 15%;
+  }
+
+}
 
 .spinner {
   margin: 100px auto;

@@ -2,6 +2,7 @@ import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 import UTIL from '../util.js'
+import { Parallax } from 'react-parallax'
 
 import AddLectureForm from './components/adminComponents/addLectureForm.js'
 import NavBar from './components/navBar.js'
@@ -26,7 +27,10 @@ var AllCoursesPage = React.createClass({
 		return(
 			<div className="AllCoursesPage">
 				<NavBar />
-				<h2>Course Page</h2>
+				<Parallax bgImage="../images/3.jpg" strength={400}>
+					<br />
+					<center><h1>Browse Lectures</h1></center>
+				</Parallax>
 				<ElementList list={this.state.lectureCollection} />
 				{UTIL.renderAdminComponent(<AddLectureForm courseId={this.props.course}/>)}
 				<FooterBar />
