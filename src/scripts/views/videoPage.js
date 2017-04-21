@@ -17,9 +17,10 @@ var VideoPage = React.createClass({
 		ACTIONS.fetchTranscription(this.props.lecture)
 			.then(()=> {
 				ACTIONS.fetchLectureById(this.props.lecture)
+				ACTIONS.fetchRandomClip()
+
 			}
 		)
-		ACTIONS.fetchRandomClip()
 		STORE.on('dataUpdated', ()=>{
 			this.setState(STORE.data)
 		})
