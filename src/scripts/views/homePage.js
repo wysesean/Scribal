@@ -2,17 +2,15 @@ import React from 'react'
 import User from '../models/userModel.js'
 
 import NavBar from './components/navBar.js'
+import LiveBackground from './components/liveBackground.js'
 import FooterBar from './components/footerBar.js'
-import UserDashboard from './components/userDashboard.js'
 
-var HomePage = React.createClass({
+var DashboardPage = React.createClass({
 	render(){
 		return(
-			<div className="HomePage">
+			<div className="DashboardPage">
 				<NavBar />
-				<h2>HomePage</h2>
-				{User.getCurrentUser()?<h2>Current user = {User.getCurrentUser().get('email')}</h2>:<div />}
-				{User.getCurrentUser()?<UserDashboard />:<div />}
+				<LiveBackground />
 				<FooterBar />
 			</div>
 		) 		
@@ -20,4 +18,4 @@ var HomePage = React.createClass({
 	}
 })
 
-export default HomePage
+export default DashboardPage

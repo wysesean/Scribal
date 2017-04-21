@@ -6,6 +6,7 @@ import init from './init'
 //Views
 import LoginPage from './views/loginPage.js'
 import HomePage from './views/homePage.js'
+import DashboardPage from './views/dashboardPage.js'
 import AboutPage from './views/aboutPage.js'
 import CategoriesPage from './views/categoriesPage.js'
 import AllCoursesPage from './views/allCoursesPage.js'
@@ -18,6 +19,7 @@ const app = function() {
 		routes:{
 			'login': 'showLoginPage',
 			'home': 'showHomePage',
+			'dashboard': 'showDashboardPage',
 			'about': 'showAboutPage',
 			'categories': 'showCategoriesPage',
 			'courses/:categoryId': 'showAllCoursesPage',
@@ -31,6 +33,9 @@ const app = function() {
 		},	
 		showHomePage(){
 			ReactDOM.render(<HomePage />, document.querySelector('.container'))
+		},
+		showDashboardPage(){
+			ReactDOM.render(<DashboardPage />, document.querySelector('.container'))
 		},
 		showAboutPage(){
 			ReactDOM.render(<AboutPage />, document.querySelector('.container'))

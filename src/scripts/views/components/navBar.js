@@ -8,6 +8,9 @@ var NavBar = React.createClass({
 	handleHome(){
 		location.hash = 'home'
 	},
+	handleDashboard(){
+		location.hash = 'dashboard'
+	},
 	handleCategories(){
 		location.hash = 'categories'
 	},
@@ -17,17 +20,23 @@ var NavBar = React.createClass({
 	},
 	render() {
 		return(
-			<div className="NavBar">
-				<h1>Scribal</h1>
-				<nav>
-					<button onClick={this.handleLogin} id="loginButton">Login</button>
-					<button onClick={this.handleHome} id="homeButton">Home</button>
-					<button onClick={this.handleCategories} id="categoriesButton">Categories</button>
-					<button onClick={this.handleLogout} id="lougoutButton">Logout</button>
+			<div className="navbar-fixed">
+				<nav className="white">
+					<div className="nav-wrapper">
+						<a href="#" className="brand-logo center">Scribal</a>
+						<ul id="nav-mobile" className="left hide-on-med-and-down">
+							<li><a href="#dashboard">Dashboard</a></li>
+							<li><a href="#categories">Categories</a></li>
+						</ul>
+						<ul id="nav-mobile" className="right hide-on-med-and-down">
+							<li><a href="#login">Login/Register</a></li>
+						</ul>
+					</div>
 				</nav>
 			</div>
 		) 
 	}
 })
+
 
 export default NavBar

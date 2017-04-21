@@ -78,7 +78,6 @@ apiRouter
 
 			Enrollment.find({userInfo:req.params._userId,courseInfo:lectureResults.courseInfo}, function(err, results){
 				if(err||!results) return res.status(500).json('Error finding user')
-					console.log(results)
 				results[0].lecturesWatched.push(req.params._lectureId)
 				results[0].save((err, record)=>{
 					if(err) return res.status(500).json('Problem saving watched record')
@@ -240,14 +239,12 @@ apiRouter
 //Posting lectures also creates 7second segmented clips of the lecture with a matching set that is at a 2 second offset
 apiRouter
   .post('/lecture', function(req, res){
-    console.log('posting lecture')
     let segmentLength = 7,
         segmentOffset = 2,
         newLecture = new Lecture(req.body)
     
     //Creates clips for a video
     for(let i=0; i<newLecture.videoLength; i+=segmentLength){
-      console.log('creating clip')
       let newClip = new Clips({
         set1:{
           startingOffset: i,
