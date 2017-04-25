@@ -25,13 +25,17 @@ var AllCoursesPage = React.createClass({
 	render() {
 		return(
 			<div className="AllCoursesPage">
-				<NavBar />
+				<NavBar 
+					categoryName={this.state.courseCollection.models[0]?this.state.courseCollection.models[0].attributes.categoryInfo.categoryName:""}
+				/>
 				<Parallax bgImage="../images/2.jpg" strength={400}>
 					<br />
 					<center><h1>Browse online courses</h1></center>
 				</Parallax>
-				<ElementList list={this.state.courseCollection} />
-				{UTIL.renderAdminComponent(<AddCourseForm categoryId={this.props.category}/>)}
+				<div className="container">
+					<ElementList list={this.state.courseCollection} />
+					{UTIL.renderAdminComponent(<AddCourseForm categoryId={this.props.category}/>)}
+				</div>
 				<FooterBar />
 			</div>
 		) 

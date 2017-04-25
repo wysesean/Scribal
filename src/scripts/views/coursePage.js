@@ -31,8 +31,10 @@ var AllCoursesPage = React.createClass({
 					<br />
 					<center><h1>Browse Lectures</h1></center>
 				</Parallax>
-				<ElementList list={this.state.lectureCollection} />
-				{UTIL.renderAdminComponent(<AddLectureForm courseId={this.props.course}/>)}
+				<div className="container">
+					<ElementList list={this.state.lectureCollection} />
+					{UTIL.renderAdminComponent(<AddLectureForm courseId={this.props.course}/>)}
+				</div>
 				<FooterBar />
 			</div>
 		) 

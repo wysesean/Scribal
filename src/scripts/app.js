@@ -29,34 +29,34 @@ const app = function() {
 			'*errorPage': 'showErrorPage' 
 		},
 		showLoginPage(){
-			ReactDOM.render(<LoginPage />, document.querySelector('.container'))
+			ReactDOM.render(<LoginPage />, document.querySelector('.maincontainer'))
 		},	
 		showHomePage(){
-			ReactDOM.render(<HomePage />, document.querySelector('.container'))
+			ReactDOM.render(<HomePage />, document.querySelector('.maincontainer'))
 		},
 		showDashboardPage(){
-			ReactDOM.render(<DashboardPage />, document.querySelector('.container'))
+			ReactDOM.render(<DashboardPage />, document.querySelector('.maincontainer'))
 		},
 		showAboutPage(){
-			ReactDOM.render(<AboutPage />, document.querySelector('.container'))
+			ReactDOM.render(<AboutPage />, document.querySelector('.maincontainer'))
 		},
 		showCategoriesPage(){
-			ReactDOM.render(<CategoriesPage />, document.querySelector('.container'))
+			ReactDOM.render(<CategoriesPage />, document.querySelector('.maincontainer'))
 		},
 		showAllCoursesPage(categoryId){
-			ReactDOM.render(<AllCoursesPage category={categoryId}/>, document.querySelector('.container'))
+			ReactDOM.render(<AllCoursesPage category={categoryId}/>, document.querySelector('.maincontainer'))
 		},
 		showCoursePage(courseId){
-			ReactDOM.render(<CoursePage course={courseId}/>, document.querySelector('.container'))
+			ReactDOM.render(<CoursePage course={courseId}/>, document.querySelector('.maincontainer'))
 		},
 		showVideoPage(lectureId){
-			ReactDOM.render(<VideoPage lecture={lectureId}/>, document.querySelector('.container'))
+			ReactDOM.render(<VideoPage lecture={lectureId}/>, document.querySelector('.maincontainer'))
 		},
 		handleRedirect(){
 			location.hash = 'home'
 		},
 		showErrorPage(){
-			ReactDOM.render(<ErrorPage />, document.querySelector('.container'))
+			ReactDOM.render(<ErrorPage />, document.querySelector('.maincontainer'))
 		}
 	})
 

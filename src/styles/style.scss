@@ -25,8 +25,8 @@ $lightGray: #fbfbfb;
 
 
 * {
-	font-family: Helvetica, Arial, sans-serif;
-	box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -36,10 +36,10 @@ body{
   width: 100vw;
 }
 
-.container{
+.maincontainer{
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  min-width: 100%;
+  min-height: 100vh;
 }
 .material-icons{
   color: $darkBlack;
@@ -58,6 +58,9 @@ canvas{
   z-index: -100;
 }
 
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating){
+  color:$yellow;
+}
 
 nav{
   ul li a{
@@ -165,17 +168,21 @@ nav{
   .login-container{
     background-color:$lightGray;
     position: absolute;
-    top: 5%;
+    top: 1%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, 0);
     margin-top: 80px;
     width: 50%;
-    height: 75%;
+    height: 100%;
   }
+
+  
 
   .tabs .indicator{
     height: 60px;
     opacity: 0.3;
+    cursor: pointer;
+
     a{
       color: $gray;
     }
@@ -188,11 +195,10 @@ nav{
     padding: 40px;
     padding-top: 10px;
     .input-field{
-      color: orange;
+      color: $gray;
     }
     h3{
       color: $yellow;
-      cursor: pointer;
     }
   }
 
@@ -203,13 +209,20 @@ nav{
 }
 
 .CategoriesPage{
+  h1{
+    color: white;
+    font-weight: bold;
+    font-family: $main-text;
+  }
+  img{
+    filter: brightness(80%);
+  }
   h3{
     font-family: $main-text;
     font-size: 18px;
     text-align: center;
-    padding: 5% 15% 5% 15%;
-  }
-
+    padding: 2%;
+  }  
 }
 
 .spinner {

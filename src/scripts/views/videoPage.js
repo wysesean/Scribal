@@ -11,16 +11,19 @@ import FooterBar from './components/footerBar.js'
 
 var VideoPage = React.createClass({
 	componentWillMount(){
+		
 		// if(User.getCurrentUser()){
 		// 	ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
 		// }
-		ACTIONS.fetchTranscription(this.props.lecture)
-			.then(()=> {
-				ACTIONS.fetchLectureById(this.props.lecture)
-				ACTIONS.fetchRandomClip()
+		ACTIONS.fetchRandomClip()
+			.then(()=>{
+				ACTIONS.fetchTranscription(this.props.lecture)
+					.then(()=> {
+						ACTIONS.fetchLectureById(this.props.lecture)
+					}
+				)
+			})
 
-			}
-		)
 		STORE.on('dataUpdated', ()=>{
 			this.setState(STORE.data)
 		})
@@ -39,7 +42,6 @@ var VideoPage = React.createClass({
 				<h2>Video Page</h2>
 				{this.state.clipModel.get('lectureInfo')?<RandomClip clip={this.state.clipModel}/>:<div />}
 				{this.state.transcriptionModel.get('transcriptionCollection')&&this.state.lectureCollection.models[0]?<LectureVideo video={this.state.lectureCollection.models[0]} transcription={this.state.transcriptionModel}/>:<div />}
-
 				<FooterBar />
 			</div>
 		) 
@@ -56,8 +58,10 @@ var LectureVideo = React.createClass({
 				//Adds captions to the video
 				let confidence = Math.floor(this.props.transcription.get('confidence') * 100)
 				let completion = Math.floor(this.props.transcription.get('completion') * 100)
+				//initialize track
 				let track = this.mainVideo.addTextTrack("captions", `English Completion_${completion}%  Confidence_${confidence}%`,"en")
 				let transcriptionCollection = this.props.transcription.get('transcriptionCollection')
+				//Add captions with time stamps
 				transcriptionCollection.forEach((el)=>{
 					track.addCue(new VTTCue(
 						el.startingOffset,

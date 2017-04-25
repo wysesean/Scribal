@@ -20,9 +20,6 @@ var LoginPage = React.createClass({
 })
 
 var LoginForm = React.createClass({
-	componentDidMount(){
-		this.forceUpdate()
-	},
 	toggleRegister(){
 		this.setState({
 			loginShowing: false

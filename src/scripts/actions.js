@@ -304,13 +304,13 @@ const ACTIONS = {
 	fetchRandomClip(){
 		let clipMod = new ClipModel()
 		clipMod.url = `/api/clips/getRandomClip`
-		clipMod
-			.fetch()
-			.then(()=>{
-				STORE.set({
-					clipModel: clipMod
+		return clipMod
+				.fetch()
+				.then(()=>{
+					STORE.set({
+						clipModel: clipMod
+					})
 				})
-			})
 	},
 	//set is either a 0 or 1, which corresponds to set1 or set2 respectively
 	transcribeClip(clip, set, inputStr){

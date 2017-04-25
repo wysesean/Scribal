@@ -27,13 +27,15 @@ var CategoriesPage = React.createClass({
 		return(
 			<div className="CategoriesPage">
 				<NavBar />
-						<Parallax bgImage="../images/1.jpg" strength={400}>
-							<br />
-							<center><h1>Online course categories</h1></center>
-						</Parallax>
-				<h3>Find your interests by browsing our online course categories. Start learning with a great university.</h3>
-				<ElementList list={this.state.categoryCollection} />
-				{UTIL.renderAdminComponent(<AddCategoryForm />)}
+				<Parallax bgImage="../images/1.jpg" strength={400}>
+					<br />
+					<center><h1>Online course categories</h1></center>
+				</Parallax>
+				<div className="container">
+					<h3>Find your interests by browsing our online course categories. Start learning with a great university.</h3>
+					<ElementList list={this.state.categoryCollection} />
+					{UTIL.renderAdminComponent(<AddCategoryForm />)}
+				</div>
 				<FooterBar />
 			</div>
 		) 
@@ -48,7 +50,7 @@ var ElementList = React.createClass({
 	},
 	render() {
 		return(
-			<div className="ElementList">
+			<div className="ElementList row">
 				{this.props.list.map(this.mapListItem)}
 			</div>
 		) 
@@ -61,11 +63,18 @@ var ListItem = React.createClass({
 	},
 	render(){
 		return(
-			<div className="ListItem">
-				<p>Category: {this.props.listItemInfo.attributes.categoryName}</p>
-				<p>Description: {this.props.listItemInfo.attributes.description}</p>
-				<button onClick={()=>{this.handleButton(this.props.listItemInfo.attributes._id)}}> See courses </button>
-				<br />
+			<div className="ListItem card small vertical col s12 m6 l4">
+				<div className="card-image waves-effect waves-block waves-light">
+					<img className="activator" src="http://lorempixel.com/100/100/nature" />
+					<span className="card-title">{this.props.listItemInfo.attributes.categoryName}</span>
+				</div>
+				<div className="card-reveal">
+					<span className="card-title grey-text text-darken-4">{this.props.listItemInfo.attributes.categoryName}<i className="material-icons right">close</i></span>
+					<p>{this.props.listItemInfo.attributes.description}</p>
+				</div>
+				<div className="card-action">
+					<a href={'#courses/'+this.props.listItemInfo.attributes._id}>See courses</a>
+				</div>
 			</div>
 		) 
 	}

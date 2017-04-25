@@ -25,10 +25,12 @@ var NavBar = React.createClass({
 					<div className="nav-wrapper">
 						<a href="#" className="brand-logo center">Scribal</a>
 						<ul id="nav-mobile" className="left hide-on-med-and-down">
-							<li><a href="#categories">Categories</a></li>
-							{User.getCurrentUser()?<li><a href="#dashboard">Dashboard</a></li>:<div />}
+							<li>
+								<a href="#categories">Categories</a>
+							</li>
 						</ul>
 						<ul id="nav-mobile" className="right hide-on-med-and-down">
+						{User.getCurrentUser()?<li><a href="#dashboard">Profile</a></li>:<div />}
 						{this.loginConditions()}	
 						</ul>
 					</div>
