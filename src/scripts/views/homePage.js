@@ -12,7 +12,7 @@ var HomePage = React.createClass({
 			<div className="HomePage">
 				<NavBar />
 				<MainText />
-				<LiveBackground />
+				<LiveBackground colorScheme={"rgb(255,255,255)"} />
 				<HomePageFoot />
 				<FooterBar />
 			</div>
@@ -36,7 +36,7 @@ var HomePageFoot = React.createClass({
 	render() {
 		return(
 			<div className="HomePageFoot">
-				<p className="flow-text">Join a community of people who are helping make education more accessible. Learn together as a community at Scribal. Try high quality online education brought to you by <a href="http://www.berkeley.edu/"><span className="berkeleyLink">Berkeley University.</span></a></p> 
+				<p className="flow-text">Join a community of people who are helping transcribe educational videos while learning. Learn together as a community at Scribal. Try high quality online education brought to you by <a href="http://www.berkeley.edu/"><span className="berkeleyLink">Berkeley University.</span></a></p> 
 			</div>
 		) 
 	}

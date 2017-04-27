@@ -8,7 +8,8 @@ const AddCategoryForm = React.createClass({
 			userData = {
 				categoryName: formEl.categoryName.value,
 				categoryImage: formEl.categoryImage.value,
-				description: formEl.description.value
+				description: formEl.description.value,
+				colorScheme: formEl.colorScheme.value
 			}
 		ACTIONS.addCategory(userData)
 	},
@@ -30,6 +31,11 @@ const AddCategoryForm = React.createClass({
 					type="text" 
 					name="description" 
 					placeholder="enter category description"
+					/>
+				<input
+					type="text"
+					name="colorScheme"
+					placeholder="enter color scheme rgb() format"
 					/>
 				<button type="submit">add category</button>
 			</form>

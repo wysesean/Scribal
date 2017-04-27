@@ -29,9 +29,9 @@ const enrollmentSchema = new mongoose.Schema({
 //-----------------------
 const categorySchema = new mongoose.Schema({
 	categoryName: {type: String, required:true},
-	categoryImage: {type: String},
-	description: {type: String},
-
+	categoryImage: {type: String, required:true},
+	description: {type: String, required:true},
+	colorScheme: {type: String, required:true},
 	createdAt: {type: Date, default: Date.now}
 })
 

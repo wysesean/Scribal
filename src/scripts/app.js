@@ -22,9 +22,9 @@ const app = function() {
 			'dashboard': 'showDashboardPage',
 			'about': 'showAboutPage',
 			'categories': 'showCategoriesPage',
-			'courses/:categoryId': 'showAllCoursesPage',
-			'course/:coursesId': 'showCoursePage',
-			'video/:videoId': 'showVideoPage',
+			'category/:categoryId/courses': 'showAllCoursesPage',
+			'category/:categoryId/course/:coursesId': 'showCoursePage',
+			'category/:categoryId/course/:coursesId/video/:videoId': 'showVideoPage',
 			'': 'handleRedirect',
 			'*errorPage': 'showErrorPage' 
 		},
@@ -46,11 +46,11 @@ const app = function() {
 		showAllCoursesPage(categoryId){
 			ReactDOM.render(<AllCoursesPage category={categoryId}/>, document.querySelector('.maincontainer'))
 		},
-		showCoursePage(courseId){
-			ReactDOM.render(<CoursePage course={courseId}/>, document.querySelector('.maincontainer'))
+		showCoursePage(categoryId,courseId){
+			ReactDOM.render(<CoursePage category={categoryId} course={courseId}/>, document.querySelector('.maincontainer'))
 		},
-		showVideoPage(lectureId){
-			ReactDOM.render(<VideoPage lecture={lectureId}/>, document.querySelector('.maincontainer'))
+		showVideoPage(categoryId,courseId,lectureId){
+			ReactDOM.render(<VideoPage category={categoryId} course={courseId} lecture={lectureId}/>, document.querySelector('.maincontainer'))
 		},
 		handleRedirect(){
 			location.hash = 'home'

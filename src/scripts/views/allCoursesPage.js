@@ -2,50 +2,58 @@ import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 import UTIL from '../util.js'
-import { Parallax } from 'react-parallax'
 
 import AddCourseForm from './components/adminComponents/addCourseForm.js'
 import NavBar from './components/navBar.js'
+import LiveBackground from './components/liveBackground.js'
 import FooterBar from './components/footerBar.js'
 
 var AllCoursesPage = React.createClass({
+	getInitialState(){
+		return STORE.data
+	},
 	componentWillMount(){
 		ACTIONS.fetchCoursesByCategory(this.props.category)
 		STORE.on('dataUpdated', ()=>{
 			this.setState(STORE.data)
 		})
 	},
+	componentDidMount(){
+		if(this.parallax){
+			$('.parallax').parallax()
+		}
+	},
 	componentWillUnmount(){
 		STORE.reset()
 		STORE.off('dataUpdated')
 	},
-	getInitialState(){
-		return STORE.data
-	},
 	render() {
+		console.log(this.state)
 		return(
 			<div className="AllCoursesPage">
-				<NavBar 
-					categoryName={this.state.courseCollection.models[0]?this.state.courseCollection.models[0].attributes.categoryInfo.categoryName:""}
-				/>
-				<Parallax bgImage="../images/2.jpg" strength={400}>
-					<br />
-					<center><h1>Browse online courses</h1></center>
-				</Parallax>
+				<NavBar	/>
+				<div className="parallax-container">
+					{this.state.courseCollection.models[0]?<h1 className="parallax-title">Courses for {this.state.courseCollection.models[0].attributes.categoryInfo.categoryName}</h1>:<div />}
+					<div ref={(e)=>this.parallax = e} className="parallax">
+						<div className="live-container">
+							{this.state.courseCollection.models[0]?<LiveBackground colorScheme={this.state.courseCollection.models[0].attributes.categoryInfo.colorScheme} />:<div />}
+						</div>
+					</div>
+				</div>
 				<div className="container">
-					<ElementList list={this.state.courseCollection} />
+					<ElementList category={this.props.category} list={this.state.courseCollection} />
 					{UTIL.renderAdminComponent(<AddCourseForm categoryId={this.props.category}/>)}
 				</div>
 				<FooterBar />
 			</div>
-		) 
+		)
 	}
 })
 
 var ElementList = React.createClass({
 	mapListItem(singleObj){
 		return(
-			<ListItem key={singleObj.cid} listItemInfo={singleObj}/>
+			<ListItem category={this.props.category} key={singleObj.cid} listItemInfo={singleObj}/>
 		)
 	},
 	render() {
@@ -64,7 +72,7 @@ var ListItem = React.createClass({
 		}
 	},
 	handleButton(courseId){
-		location.hash = `course/${courseId}`
+		location.hash = `category/${this.props.category}course/${courseId}`
 	},
 	render(){
 		return(

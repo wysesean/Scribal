@@ -2,7 +2,6 @@ import React from 'react'
 import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 import UTIL from '../util.js'
-import { Parallax } from 'react-parallax'
 
 import AddCategoryForm from './components/adminComponents/addCategoryForm.js'
 import NavBar from './components/navBar.js'
@@ -19,6 +18,11 @@ var CategoriesPage = React.createClass({
 			this.setState(STORE.data)
 		})
 	},
+	componentDidMount(){
+		if(this.parallax){
+			$('.parallax').parallax()
+		}
+	},
 	componentWillUnmount(){
 		STORE.reset()
 		STORE.off('dataUpdated')
@@ -27,10 +31,14 @@ var CategoriesPage = React.createClass({
 		return(
 			<div className="CategoriesPage">
 				<NavBar />
-				<Parallax bgImage="../images/1.jpg" strength={400}>
-					<br />
-					<center><h1>Online course categories</h1></center>
-				</Parallax>
+				<div className="parallax-container">
+					<h1 className="parallax-title">Online course categories</h1>
+					<div ref={(e)=>this.parallax = e} className="parallax">
+						<div className="live-container">
+							<LiveBackground colorScheme={"rgb(255,255,255)"} />
+						</div>
+					</div>
+				</div>
 				<div className="container">
 					<h3>Find your interests by browsing our online course categories. Start learning with a great university.</h3>
 					<ElementList list={this.state.categoryCollection} />
@@ -59,22 +67,17 @@ var ElementList = React.createClass({
 
 var ListItem = React.createClass({
 	handleButton(categoryId){
-		location.hash = `courses/${categoryId}`
+		location.hash = `category/${categoryId}/courses`
 	},
 	render(){
 		return(
-			<div className="ListItem card small vertical col s12 m6 l4">
-				<div className="card-image waves-effect waves-block waves-light">
-					<img className="activator" src="http://lorempixel.com/100/100/nature" />
-					<span className="card-title">{this.props.listItemInfo.attributes.categoryName}</span>
-				</div>
-				<div className="card-reveal">
-					<span className="card-title grey-text text-darken-4">{this.props.listItemInfo.attributes.categoryName}<i className="material-icons right">close</i></span>
-					<p>{this.props.listItemInfo.attributes.description}</p>
-				</div>
-				<div className="card-action">
-					<a href={'#courses/'+this.props.listItemInfo.attributes._id}>See courses</a>
-				</div>
+			<div onClick={()=>this.handleButton(this.props.listItemInfo.attributes._id)} className="ListItem col s12 m4 l3">
+				<center>
+					<div  className="img-container">
+						<img className="responsive-img" src={this.props.listItemInfo.attributes.categoryImage} />
+						<p className="text flow-text">{this.props.listItemInfo.attributes.categoryName}</p>
+					</div>
+				</center>
 			</div>
 		) 
 	}

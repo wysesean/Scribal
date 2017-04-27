@@ -11,7 +11,7 @@ var LoginPage = React.createClass({
 		return(
 			<div className="LoginPage">
 				<NavBar />
-				<LiveBackground />
+				<LiveBackground colorScheme={"rgb(255,240,210)"}/>
 				<LoginForm />
 				<FooterBar />
 			</div>
@@ -20,6 +20,11 @@ var LoginPage = React.createClass({
 })
 
 var LoginForm = React.createClass({
+	componentDidMount(){
+		if(this.tabs){
+			$(this.tabs).tabs();
+		}
+	},
 	toggleRegister(){
 		this.setState({
 			loginShowing: false
@@ -39,9 +44,9 @@ var LoginForm = React.createClass({
 	render: function() {
 		return(
 			<div className="login-container">
-				<ul className="tabs">
-					<li className="tab col s3" onClick={this.toggleLogin}><a className="black-text active">login</a></li>
-					<li className="tab col s3" onClick={this.toggleRegister}><a className="black-text">register</a></li>
+				<ul ref={(input)=>this.tabs = input} className="tabs tabs-fixed-width">
+					<li className="tab col s6" onClick={this.toggleLogin}><a className="black-text">login</a></li>
+					<li className="tab col s6" onClick={this.toggleRegister}><a className="black-text">register</a></li>
 				</ul>
 				{this.state.loginShowing?<LoginComponent />:<RegisterComponent />}
 			</div>
@@ -74,7 +79,7 @@ var LoginComponent = React.createClass({
 						</div>
 						<br />
 						<center>
-							<button className="btn waves-effect waves-light black" type="submit">Connect</button>
+							<button className="btn waves-effect waves-light" type="submit">Connect</button>
 							<br />
 							<br />
 						</center>
@@ -121,7 +126,7 @@ var RegisterComponent = React.createClass({
 							</div>
 						</div>
 						<center>
-							<button className="btn waves-effect waves-light black" type="submit">Submit</button>
+							<button className="btn waves-effect waves-light" type="submit">Submit</button>
 						</center>
 					</div>
 				</form>
