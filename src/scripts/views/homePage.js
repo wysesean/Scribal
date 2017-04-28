@@ -14,7 +14,6 @@ var HomePage = React.createClass({
 				<MainText />
 				<LiveBackground colorScheme={"rgb(255,255,255)"} />
 				<HomePageFoot />
-				<FooterBar />
 			</div>
 		) 		
 		

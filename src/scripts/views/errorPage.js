@@ -8,7 +8,6 @@ var ErrorPage = React.createClass({
 			<div className="ErrorPage">
 				<NavBar />
 				<h2>ErrorPage</h2>
-				<FooterBar />
 			</div>
 		) 
 	}

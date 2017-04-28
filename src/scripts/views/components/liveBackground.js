@@ -45,7 +45,7 @@ var LiveBackbround = React.createClass({
                     this.canvas.height = document.body.clientHeight
                     
                     this.drawBackground()
-                    setInterval(()=>this.animate.call(this), 25)
+                    setInterval(()=>this.animate.call(this), 20)
                 },
         
                 handleResize: function(){

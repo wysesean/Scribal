@@ -174,7 +174,20 @@ const ACTIONS = {
 				})
 			})
 	},
+	fetchCategoryById(categoryId){
+		let categoryColl = STORE.get('categoryCollection')
+		let categoryModel = new CategoryModel()
 
+		categoryModel.url = `api/category/${categoryId}`
+		categoryModel
+			.fetch()
+			.then(()=>{
+				categoryColl.push(categoryModel)
+				STORE.set({
+					categoryCollection: categoryColl
+				})
+			})
+	},
 	//TO DO
 	updateCategory(categoryId, updateObj){
 
