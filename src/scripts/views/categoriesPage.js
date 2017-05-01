@@ -40,7 +40,7 @@ var CategoriesPage = React.createClass({
 					</div>
 				</div>
 				<div className="container">
-					<h3>Find your interests by browsing our online course categories. Start learning with a great university.</h3>
+					<h3>Find your interests by browsing our online course categories. Start learning today.</h3>
 					<ElementList list={this.state.categoryCollection} />
 					{UTIL.renderAdminComponent(<AddCategoryForm />)}
 				</div>

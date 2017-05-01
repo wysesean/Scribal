@@ -122,7 +122,6 @@ apiRouter
         res.json(result)
       })
   })
-
   
 //-----------------------------------
 //CATEGORY ROUTES
@@ -186,7 +185,6 @@ apiRouter
 //-----------------------------------
 //COURSE ROUTES
 //-----------------------------------
-
 apiRouter
   .post('/course', function(req, res){
     
@@ -230,6 +228,25 @@ apiRouter
     })
   })
   
+  //Adds 1 to the number of lectures available for a course
+  .put('/course/:_id/updateCourseVideo', function(req, res){
+    Course.findById(req.params._id, function(err, record){
+      if(err){
+        res.status(500).send(err)
+      }
+      else if(!record){
+        res.status(400).send('no course found with that id')
+      }
+      else{
+        record.numberOfLectures = record.numberOfLectures + 1
+        record.save((err, courseRecord)=>{
+          if(err) return res.status(500).send(err)
+          res.json(courseRecord)
+        })
+      }
+    }) 
+  })
+
   //TO DO, OVER HAUL THIS
   .delete('/course/:_id', function(req, res){
     Course.remove({_id:req.params._id}, (err)=>{

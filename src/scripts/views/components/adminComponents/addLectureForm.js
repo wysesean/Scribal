@@ -59,6 +59,7 @@ const AddVideoForm = React.createClass({
 						courseInfo: this.props.courseId
 					}
 					ACTIONS.addLectureToCourse(this.props.courseId,lectureObj)
+						.then(()=>ACTIONS.updateCourseVideoCount(this.props.courseId))
 				}
 			})
 	},

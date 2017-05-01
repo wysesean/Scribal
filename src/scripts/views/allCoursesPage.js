@@ -29,10 +29,6 @@ var AllCoursesPage = React.createClass({
 		STORE.off('dataUpdated')
 	},
 	render() {
-		console.log("state",this.state)
-		if(this.state.categoryCollection.models[0]){
-			console.log(this.state.categoryCollection.models[0].attributes.categoryName)
-		}
 		return(
 			<div className="AllCoursesPage">
 				<NavBar	/>
@@ -46,6 +42,9 @@ var AllCoursesPage = React.createClass({
 				</div>
 				<div className="container">
 					{this.state.categoryCollection.models[0]?<h3>{this.state.categoryCollection.models[0].attributes.description}</h3>:<div />}
+					<center>
+						<button className="category-button" onClick={()=>location.hash="categories"}>Back to Categories</button>
+					</center>
 					<ElementList category={this.props.category} list={this.state.courseCollection} />
 					{UTIL.renderAdminComponent(<AddCourseForm categoryId={this.props.category}/>)}
 				</div>
@@ -88,19 +87,22 @@ var ListItem = React.createClass({
 			<div className="ListItem col s12">
 				<div className="my-own-hoverable card horizontal">
 					<div className="card-image">
-						<img onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)} className="responsive-img" src="http://lorempixel.com/150/200/" />
+						<img onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)} className="responsive-img" src={this.props.listItemInfo.attributes.courseImage} />
 					</div>
 					<div className="card-stacked">
 						<div className="card-content">
-							<h6 onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)}>{this.props.listItemInfo.attributes.courseName}</h6>
-							<div className="just-a-line" />
-							<p>{this.props.listItemInfo.attributes.description}</p>
-							<div className="just-a-line" />
-							<div className="make-me-wider">
-								<div><p className="givemeroom">5 Lectures Available</p></div>
-								<button className="card-btn" onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)}>More</button>
+							<div className="card-wrapper">
+								<h6 onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)}>{this.props.listItemInfo.attributes.courseName}</h6>
+								<br/>
+								<div className="just-a-line" />
+								<p>{this.props.listItemInfo.attributes.description}</p>
+								<div className="just-a-line" />
+								<br />
 							</div>
-							<div className="just-a-line" />
+							<div className="align-bottom make-me-wider">
+								<div><p className="givemeroom">{this.props.listItemInfo.attributes.numberOfLectures} Lectures Available</p></div>
+								<button className="card-btn" onClick={()=>this.handleLink(this.props.listItemInfo.attributes._id)}>View Now</button>
+							</div>
 						</div>
 					</div>
 				</div>

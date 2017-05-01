@@ -224,6 +224,19 @@ const ACTIONS = {
 				})
 
 	},
+	updateCourseVideoCount(courseId){
+		$.ajax({
+			method: 'PUT',
+			type: 'json',
+			url: `/api/course/${courseId}/updateCourseVideo`
+		})
+		.done((resp)=>{
+			console.log('course video count updated')
+		})
+		.fail((err)=>{
+			console.log('error updated video count',err)
+		})
+	},
 	fetchCoursesByCategory(categoryId){
 		let courseColl = STORE.get('courseCollection')
 		courseColl.url = `/api/category/${categoryId}/course/`
@@ -262,7 +275,7 @@ const ACTIONS = {
 	},
 	addLectureToCourse(courseId,courseObj){
 		let newLecture = new LectureModel(courseObj)
-			newLecture
+		return newLecture
 				.save()
 				.done((resp)=>{
 					console.log('saved your lecture', resp)
