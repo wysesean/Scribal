@@ -20,6 +20,11 @@ var LoginPage = React.createClass({
 })
 
 var LoginForm = React.createClass({
+	getInitialState(){
+		return{
+			loginShowing: true
+		}
+	},
 	componentDidMount(){
 		if(this.tabs){
 			$(this.tabs).tabs();
@@ -35,11 +40,6 @@ var LoginForm = React.createClass({
 			loginShowing: true
 		})
 		
-	},
-	getInitialState(){
-		return{
-			loginShowing: true
-		}
 	},
 	render: function() {
 		return(

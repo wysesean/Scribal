@@ -31,7 +31,7 @@ var RandomClip = React.createClass({
 		}
 		return(
 			<div className="data-vjs-player">
-				<video id='clipPlayer' ref={(input)=>this.clipVideoTag = input} className="video-js" { ...videoJsOptions }>
+				<video id='clipPlayer' ref={(input)=>this.clipVideoTag = input} className="video-js vjs-default-skin vjs-big-play-centered" { ...videoJsOptions }>
 								</video>
 				<TranscriptionInput clip={this.props.clip} set={randomNum}/>
 			</div>

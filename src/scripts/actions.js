@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import request from 'superagent'
-
 import STORE from './store.js'
 
 import User from './models/userModel.js'
@@ -112,12 +111,17 @@ const ACTIONS = {
 			})
 	},
 	unenrollUserFromCourse(userId,enrollId){
-		var enrolledCourse = STORE.get('enrollmentCollection').get(enrollId)
+		var enrolledCourse = STORE
+								.get('enrollmentCollection')
+								.find(function(m){
+									return m.get('courseInfo')._id === enrollId
+								})
 		enrolledCourse.url = `/api/users/${userId}/enrollment/${enrollId}`
 		enrolledCourse
 			.destroy()
 			.done((resp)=>{
 				console.log('course unenrolled', resp)
+				ACTIONS.fetchUserEnrolledCourses(userId)
 			})
 			.fail((err)=>{
 				console.log('problem unenrolling', err)
@@ -343,7 +347,11 @@ const ACTIONS = {
 		set ? clip.get('set2').transcriptionCollection.push(inputStr) : clip.get('set1').transcriptionCollection.push(inputStr)
 		clip.url = `/api/clips/${clip.get('_id')}`
 		clip.save()
-			.done((resp)=>{console.log('clip has been transcribed', resp)})
+			.done((resp)=>{
+				console.log('clip has been transcribed', resp)
+				toastr.success("Thank you for transcribing the clip!")
+				STORE.set({modalShowing: false})
+			})
 			.fail((err)=>{console.log('problem transcribing clip', err)})
 	}
 }

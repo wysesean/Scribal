@@ -40,8 +40,6 @@ var AllCoursesPage = React.createClass({
 	},
 	renderEnrollButton(){
 		var enrollButton = <div />
-		
-		//TO DO UNENROLL
 
 		if(User.getCurrentUser()){
 			var isEnrolled = false,
@@ -51,10 +49,10 @@ var AllCoursesPage = React.createClass({
 					if(el.attributes.courseInfo._id===courseId){
 						enrollButton =	<button className="category-button" onClick={()=>ACTIONS.unenrollUserFromCourse(User.getCurrentUser().get("_id"), this.props.course)}>Unenroll</button>
 					}
-					else{
-						enrollButton = <button className="category-button" onClick={()=>ACTIONS.enrollUserFromCourse(User.getCurrentUser().get("_id"), this.props.course)}>Enroll</button>
-					}
 				})
+			}
+			else{
+				enrollButton = <button className="category-button" onClick={()=>ACTIONS.enrollUserToCourse(User.getCurrentUser().get("_id"), this.props.course)}>Enroll</button>
 			}
 		}
 		return enrollButton

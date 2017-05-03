@@ -13,7 +13,8 @@ const STORE = Object.assign({}, Backbone.Events, {
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
 		transcriptionModel: new TranscriptionModel(),
-		clipModel: new ClipModel()
+		clipModel: new ClipModel(),
+		modalShowing: true
 	},
 	data_default:{
 		enrollmentCollection: new EnrollmentCollection(),
@@ -21,7 +22,8 @@ const STORE = Object.assign({}, Backbone.Events, {
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
 		transcriptionModel: new TranscriptionModel(),
-		clipModel: new ClipModel()
+		clipModel: new ClipModel(),
+		modalShowing: true
 	},
 	get(prop){
 		if(this.data[prop] === undefined) {
