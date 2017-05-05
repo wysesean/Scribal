@@ -305,9 +305,9 @@ const ACTIONS = {
 		lectureColl.url = `/api/lecture/${lectureId}`
 		return lectureColl
 			.fetch()
-			.then(()=>{
+			.then((apiResponse)=>{
 				STORE.set({
-					lectureCollection: lectureColl
+					lecturePlaying: apiResponse.videoURL
 				})
 			})
 	},

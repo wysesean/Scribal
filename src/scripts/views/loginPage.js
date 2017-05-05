@@ -3,7 +3,6 @@ import ACTIONS from '../actions.js'
 import STORE from '../store.js'
 
 import NavBar from './components/navBar.js'
-import FooterBar from './components/footerBar.js'
 import LiveBackground from './components/liveBackground.js'
 
 var LoginPage = React.createClass({
@@ -13,7 +12,6 @@ var LoginPage = React.createClass({
 				<NavBar />
 				<LiveBackground colorScheme={"rgb(255,240,210)"}/>
 				<LoginForm />
-				<FooterBar />
 			</div>
 		) 
 	}

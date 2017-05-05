@@ -1,4 +1,5 @@
 import React from 'react'
+import $ from 'jquery'
 
 var LiveBackbround = React.createClass({
     componentDidMount(){
@@ -26,8 +27,6 @@ var LiveBackbround = React.createClass({
         if(this.canvasTag){
             var backgroundCanvas = this.canvasTag
                 var livePattern = {
-                  canvas: null,
-                  context: null,
                   cols: 0,
                   rows: 0,
                   colors: triangleColors,
@@ -48,8 +47,9 @@ var LiveBackbround = React.createClass({
                     setInterval(()=>this.animate.call(this), 20)
                 },
         
-                handleResize: function(){
-                    this.context.clearRect(0, 0, canvas.width, canvas.height)
+                handleResize: function(context1){
+                    this.context = this.canvas.getContext('2d')
+                    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
                     
                     this.cols = Math.floor(document.body.clientWidth / 24) + 2
                     this.rows = Math.floor(document.body.clientHeight / 24) + 1
@@ -108,12 +108,15 @@ var LiveBackbround = React.createClass({
                 }
             }
             livePattern.init()
-            window.addEventListener('resize', ()=>livePattern.handleResize())
+            var resizeContext = this.canvasTag
+            window.addEventListener('resize', ()=>livePattern.handleResize(resizeContext))
         }
 
     },
     componentWillUnmount(){
-        window.removeEventListener('resize', ()=>livePattern.handleResize())
+        var el = document.getElementById('canvas'),
+            elClone = el.cloneNode(true)
+        el.parentNode.replaceChild(elClone, el)
     },
     render: function() {
         return(

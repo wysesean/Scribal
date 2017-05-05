@@ -25,15 +25,19 @@ var RandomClip = React.createClass({
 		const videoJsOptions = {
 			controls: true,
 			src: clipURL,
-			type: 'video/mp4',
-			width: 500,
-			height: 500
+			type: 'video/mp4'
 		}
 		return(
-			<div className="data-vjs-player">
-				<video id='clipPlayer' ref={(input)=>this.clipVideoTag = input} className="video-js vjs-default-skin vjs-big-play-centered" { ...videoJsOptions }>
-								</video>
-				<TranscriptionInput clip={this.props.clip} set={randomNum}/>
+			<div className="random-wrapper">
+				<div className="random-content">
+					<video 
+						id='clipPlayer' 
+						ref={(input)=>this.clipVideoTag = input} 
+						className="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" 
+						{ ...videoJsOptions }>
+					</video>
+					<TranscriptionInput clip={this.props.clip} set={randomNum}/>
+				</div>
 			</div>
 		) 
 	}
@@ -48,7 +52,7 @@ var TranscriptionInput = React.createClass({
 	render(){
 		return(
 			<div className="TranscriptionInput">
-				<input onKeyPress={this.handleInput} type='text' placeholder='transcribe me' />
+				<input onKeyPress={this.handleInput} type='text' placeholder='Transcribe me to continue...' />
 			</div>
 		) 
 	}

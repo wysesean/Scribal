@@ -13,6 +13,7 @@ const STORE = Object.assign({}, Backbone.Events, {
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
 		transcriptionModel: new TranscriptionModel(),
+		lecturePlaying: "",
 		clipModel: new ClipModel(),
 		modalShowing: true
 	},
@@ -22,6 +23,7 @@ const STORE = Object.assign({}, Backbone.Events, {
 		courseCollection: new CourseCollection(),
 		lectureCollection: new LectureCollection(), 
 		transcriptionModel: new TranscriptionModel(),
+		lecturePlaying: "",
 		clipModel: new ClipModel(),
 		modalShowing: true
 	},

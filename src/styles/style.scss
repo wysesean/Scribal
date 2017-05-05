@@ -126,6 +126,48 @@ footer{
   border: none;
 }
 
+.Modal {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+
+   background-color: $lightGray;
+   padding: 5%;
+   width: 50%;
+   transform: translate(-50%, -50%);
+   .random-wrapper{
+      .random-content{
+        width:90%;
+        max-width: 640px;
+      }
+      ::-webkit-input-placeholder {
+         text-align: center;
+      }
+
+      :-moz-placeholder { /* Firefox 18- */
+         text-align: center;  
+      }
+
+      ::-moz-placeholder {  /* Firefox 19+ */
+         text-align: center;  
+      }
+
+      :-ms-input-placeholder {  
+         text-align: center; 
+      }
+   }
+ }
+
+.Overlay {
+ position: fixed;
+ z-index: 100;
+ top: 64px;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background-color: rgba(0,0,0,.5);
+}
+
 //=============
 //VIEWS
 //=============
@@ -441,6 +483,33 @@ footer{
   }
 }
 
+.VideoPage{
+  .video-wrapper{
+    max-width: 750px;
+    width: 70%;
+    max-height: 50vh;
+    transform: translateY(7.5vh);
+  }
+  .video-content{
+
+  }
+  .video-row{
+    margin-bottom: 0;
+    height: 80vh;
+    .s9{
+      background-color: $darkGray;
+      height: 100%;
+    }
+    .s3{
+      height: 100%;
+      overflow-y: scroll;
+      .activeVideo{
+        background-color: rgb(100,100,100);
+      }
+    }
+  }
+
+}
 .spinner {
   margin: 100px auto;
   width: 50px;
