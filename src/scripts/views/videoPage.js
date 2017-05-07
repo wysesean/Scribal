@@ -19,9 +19,9 @@ var VideoPage = React.createClass({
 		return STORE.data
 	},
 	componentWillMount(){
-		// if(User.getCurrentUser()){	
-		// 	ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
-		// }
+		if(User.getCurrentUser()){	
+			ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
+		}
 		ACTIONS.fetchRandomClip()
 			.then(()=>{
 				ACTIONS.fetchTranscription(this.props.lecture)
@@ -113,7 +113,6 @@ var LectureVideo = React.createClass({
 				//Add captions with time stamps
 				transcriptionCollection.forEach((el)=>{
 					if(el.transcription){
-						console.log(el.transcription)
 						track.addCue(new VTTCue(
 							el.startingOffset,
 							el.endingOffset,
