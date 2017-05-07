@@ -98,23 +98,30 @@ var LectureVideo = React.createClass({
 	componentDidMount() {
 		this.mainVideo = videojs(
 			this.mainVideoTag,
-			{},
+			{
+				html5:{
+					nativeTextTracks: false
+				}
+			},
+			//on ready, transcribe stuff
 			()=>{
 				//Sets the confidence and completion for cc button on videojs
 				let confidence = Math.floor(this.props.transcription.get('confidence') * 100)
 				let completion = Math.floor(this.props.transcription.get('completion') * 100)
 				//initialize track
-				let track = this.mainVideo.addTextTrack("captions", `English Completion_${completion}%  Confidence_${confidence}%`,"en")
+				let track = this.mainVideo.addTextTrack("captions", "English","en")
 				let transcriptionCollection = this.props.transcription.get('transcriptionCollection')
 				//Add captions with time stamps
 				transcriptionCollection.forEach((el)=>{
-					track.addCue(new VTTCue(
-						el.startingOffset,
-						el.endingOffset,
-						el.transcription
-					))
+					if(el.transcription){
+						console.log(el.transcription)
+						track.addCue(new VTTCue(
+							el.startingOffset,
+							el.endingOffset,
+							el.transcription
+						))
+					}
 				})
-				track.mode = "showing";
 			}
 		)
 	},
@@ -130,7 +137,7 @@ var LectureVideo = React.createClass({
 			}
 		return(
 			<div className="video-wrapper">
-				<div className="video-content">
+				<div className="video-content data-vjs-player">
 					<video 
 						ref={(input)=>this.mainVideoTag = input}
 	 					className="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" 
