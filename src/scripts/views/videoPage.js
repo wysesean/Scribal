@@ -114,6 +114,7 @@ var LectureVideo = React.createClass({
 						el.transcription
 					))
 				})
+				track.mode = "showing";
 			}
 		)
 	},
