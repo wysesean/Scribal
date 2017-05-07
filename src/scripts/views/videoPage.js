@@ -19,9 +19,10 @@ var VideoPage = React.createClass({
 		return STORE.data
 	},
 	componentWillMount(){
-		if(User.getCurrentUser()){	
-			ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
-		}
+		//TO DO
+		// if(User.getCurrentUser()){	
+		// 	ACTIONS.userWatchedLecture(User.getCurrentUser().get('_id'),this.props.lecture)
+		// }
 		ACTIONS.fetchRandomClip()
 			.then(()=>{
 				ACTIONS.fetchTranscription(this.props.lecture)
