@@ -1,5 +1,8 @@
 # Scribal
 Scribal is an online education platform that rehosts videos taken down by a [recent lawsuit](https://boingboing.net/2017/03/17/fahrenheit-451.html) against Berkeley for not being ADA compliant. Scribal not only rehosts them but makes them ADA compliant by transcribing the educational videos on the platform through crowd-sourcing.
+#### [Live website here](https://scribal.herokuapp.com/#home)
+
+
 ![screenshot2](https://res.cloudinary.com/dd21qo4mj/image/upload/v1494148161/Untitled_jicm2b.png)
 
 ## How it works:
