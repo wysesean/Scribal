@@ -40,7 +40,7 @@ var AllCoursesPage = React.createClass({
 						</div>
 					</div>
 				</div>
-				<div className="container">
+				<div className="container content-container">
 					{this.state.categoryCollection.attributes?<h3>{this.state.categoryCollection.attributes.description}</h3>:<div />}
 					<center>
 						<button className="category-button" onClick={()=>location.hash="categories"}>Back to Categories</button>

@@ -69,7 +69,7 @@ var AllCoursesPage = React.createClass({
 						</div>
 					</div>
 				</div>
-				<div className="container">
+				<div className="container content-container">
 					{this.state.categoryCollection.attributes?<h3>{this.state.courseCollection.models[0].attributes.description}</h3>:<div />}
 					<center>
 						<button className="category-button" onClick={()=>this.handleLink(this.props.category)}>Back to Courses</button>

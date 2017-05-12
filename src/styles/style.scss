@@ -344,6 +344,9 @@ footer{
         user-select: none;
       }
   }
+  .content-container{
+    min-height: 50vh;
+  }
 }
 
 .AllCoursesPage{
@@ -433,6 +436,9 @@ footer{
     border: 0;
     padding: 5px;
   }
+  .content-container{
+    min-height: 50vh;
+  }
 }
 
 .CoursesPage{
@@ -480,6 +486,9 @@ footer{
     border: 10px;
     margin: 10px;
     margin-bottom: 10px;
+  }
+  .content-container{
+    min-height: 50vh;
   }
 }
 
