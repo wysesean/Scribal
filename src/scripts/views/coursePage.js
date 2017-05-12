@@ -62,15 +62,15 @@ var AllCoursesPage = React.createClass({
 			<div className="CoursesPage">
 				<NavBar />
 				<div className="parallax-container">
-					{this.state.categoryCollection.models[0]?<h1 className="parallax-title">Lectures for {this.state.courseCollection.models[0].attributes.courseName}</h1>:<div />}
+					{this.state.categoryCollection.attributes?<h1 className="parallax-title">Lectures for {this.state.courseCollection.models[0].attributes.courseName}</h1>:<div />}
 					<div ref={(e)=>this.parallax = e} className="parallax">
 						<div className="live-container">
-							{this.state.categoryCollection.models[0]?<LiveBackground colorScheme={this.state.categoryCollection.models[0].attributes.colorScheme} />:<div />}
+							{this.state.categoryCollection.attributes?<LiveBackground colorScheme={this.state.categoryCollection.attributes.colorScheme} />:<div />}
 						</div>
 					</div>
 				</div>
 				<div className="container">
-					{this.state.categoryCollection.models[0]?<h3>{this.state.courseCollection.models[0].attributes.description}</h3>:<div />}
+					{this.state.categoryCollection.attributes?<h3>{this.state.courseCollection.models[0].attributes.description}</h3>:<div />}
 					<center>
 						<button className="category-button" onClick={()=>this.handleLink(this.props.category)}>Back to Courses</button>
 						{this.renderEnrollButton()}

@@ -33,15 +33,15 @@ var AllCoursesPage = React.createClass({
 			<div className="AllCoursesPage">
 				<NavBar	/>
 				<div className="parallax-container">
-					{this.state.categoryCollection.models[0]?<h1 className="parallax-title">Courses for {this.state.categoryCollection.models[0].attributes.categoryName}</h1>:<div />}
+					{this.state.categoryCollection.attributes?<h1 className="parallax-title">Courses for {this.state.categoryCollection.attributes.categoryName}</h1>:<div />}
 					<div ref={(e)=>this.parallax = e} className="parallax">
 						<div className="live-container">
-							{this.state.categoryCollection.models[0]?<LiveBackground colorScheme={this.state.categoryCollection.models[0].attributes.colorScheme} />:<div />}
+							{this.state.categoryCollection.attributes?<LiveBackground colorScheme={this.state.categoryCollection.attributes.colorScheme} />:<div />}
 						</div>
 					</div>
 				</div>
 				<div className="container">
-					{this.state.categoryCollection.models[0]?<h3>{this.state.categoryCollection.models[0].attributes.description}</h3>:<div />}
+					{this.state.categoryCollection.attributes?<h3>{this.state.categoryCollection.attributes.description}</h3>:<div />}
 					<center>
 						<button className="category-button" onClick={()=>location.hash="categories"}>Back to Categories</button>
 					</center>

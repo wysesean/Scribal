@@ -39,7 +39,6 @@ const STORE = Object.assign({}, Backbone.Events, {
 	},
 	reset: function() {
 		this.data = this.data_default
-		this.trigger('dataUpdated')
 	}
 })
 
