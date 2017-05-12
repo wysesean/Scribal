@@ -15,7 +15,7 @@ var AllCoursesPage = React.createClass({
 	},
 	componentWillMount(){
 		ACTIONS.fetchLectureByCourse(this.props.course)
-		ACTIONS.fetchCoursesByCategory(this.props.category)
+		ACTIONS.fetchCourseById(this.props.course)
 		ACTIONS.fetchCategoryById(this.props.category)
 		if(User.getCurrentUser()){
 			ACTIONS.fetchUserEnrolledCourses(User.getCurrentUser().get('_id'))
@@ -58,6 +58,7 @@ var AllCoursesPage = React.createClass({
 		return enrollButton
 	},
 	render() {
+		console.log(this.state)
 		return(
 			<div className="CoursesPage">
 				<NavBar />

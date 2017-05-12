@@ -206,6 +206,13 @@ apiRouter
     }).populate('categoryInfo')
   })
 
+  .get('/course/:_id', function(req, res){
+    Course.findById(req.params._id, function(err, results){
+      if(err) return res.json(err) 
+      res.json(results)
+    }).populate('categoryInfo')
+  })
+
   .get('/course/:_courseId/lecture', function(req, res){
     Lecture.find({courseInfo:req.params._courseId}, function(err, results){
       if(err || !results) return res.json(err)

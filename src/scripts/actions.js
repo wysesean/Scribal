@@ -252,7 +252,7 @@ const ACTIONS = {
 	},
 	fetchCourseById(courseId){
 		let courseColl = STORE.get('courseCollection')
-		courseColl.url = `/api/category/${courseId}`
+		courseColl.url = `/api/course/${courseId}`
 		courseColl
 			.fetch()
 			.then(()=>{
